@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MassConnect — Massachusetts Business Front Door</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f3; color: #1a1a1a; min-height: 100vh; padding: 2rem 1rem; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes typing { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  @keyframes progress { from{width:0} to{width:100%} }
+  .msg { animation: fadeIn 0.4s ease both; }
+  .typing-dot { animation: typing 1.2s ease infinite; display:inline-block; width:6px; height:6px; border-radius:50%; background:#888; margin:0 2px; }
+  .typing-dot:nth-child(2){animation-delay:.2s}
+  .typing-dot:nth-child(3){animation-delay:.4s}
+  .step-btn { cursor:pointer; border:1px solid #ddd; border-radius:8px; padding:8px 14px; background:#fff; color:#1a1a1a; font-size:13px; transition:background 0.15s; }
+  .step-btn:hover { background:#f0f0ee; }
+  .step-btn.active { background:#1D9E75; border-color:#1D9E75; color:#fff; }
+  .prog-bar { height:3px; background:#1D9E75; border-radius:2px; animation: progress 0.6s ease both; }
+  .score-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .score-fill { height:8px; border-radius:4px; background:#1D9E75; }
+  .tag { display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:500; margin:2px; }
+  .card { background:#fff; border-radius:16px; border:1px solid #e8e8e6; padding:1.25rem; }
+  .surface { background:#f5f5f3; border-radius:16px; padding:1.25rem; }
+  .metric { background:#f5f5f3; border-radius:10px; padding:12px; text-align:center; }
+  .metric-val { font-size:22px; font-weight:500; color:#1D9E75; }
+  .metric-lbl { font-size:11px; color:#666; margin-top:2px; }
+  .nav-wrap { display:flex; gap:8px; margin-bottom:1.5rem; flex-wrap:wrap; }
+  .footer-nav { display:flex; justify-content:space-between; margin-top:1.5rem; }
+  .btn-primary { padding:10px 24px; background:#1D9E75; border:none; border-radius:10px; color:#fff; font-size:14px; cursor:pointer; font-weight:500; }
+  .btn-primary:hover { background:#0F6E56; }
+  .btn-ghost { cursor:pointer; border:1px solid #ddd; border-radius:8px; padding:8px 16px; background:#fff; color:#1a1a1a; font-size:13px; }
+  input[type=text] { width:100%; border:1px solid #ddd; border-radius:8px; padding:10px 14px; font-size:14px; outline:none; }
+  input[type=text]:focus { border-color:#1D9E75; }
+</style>
+</head>
+<body>
+
+<div style="max-width:680px;margin:0 auto;">
+
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:2rem;">
+    <div style="width:40px;height:40px;border-radius:10px;background:#E1F5EE;display:flex;align-items:center;justify-content:center;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0F6E56" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </div>
+    <div>
+      <div style="font-size:16px;font-weight:500;">MassConnect</div>
+      <div style="font-size:12px;color:#666;">Massachusetts Business Front Door — Interactive Demo</div>
+    </div>
+    <div style="margin-left:auto;background:#E1F5EE;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:500;color:#0F6E56;">Concept Demo</div>
+  </div>
+
+  <div class="nav-wrap" id="nav">
+    <button class="step-btn active" onclick="goTo(0)">1. Enter</button>
+    <button class="step-btn" onclick="goTo(1)">2. Conversation</button>
+    <button class="step-btn" onclick="goTo(2)">3. Scorecard</button>
+    <button class="step-btn" onclick="goTo(3)">4. Staff view</button>
+    <button class="step-btn" onclick="goTo(4)">5. Outcome</button>
+  </div>
+
+  <div id="stage"></div>
+
+  <div class="footer-nav">
+    <button class="btn-ghost" id="prev-btn" onclick="prev()" style="display:none;">← Back</button>
+    <button class="btn-primary" id="next-btn" onclick="next()" style="margin-left:auto;">Next →</button>
+  </div>
+
+  <div style="margin-top:2rem;padding-top:1rem;border-top:1px solid #e8e8e6;display:flex;justify-content:space-between;align-items:center;">
+    <div style="font-size:12px;color:#999;">MassConnect concept demo — built for EOED Business Front Door initiative</div>
+    <div style="font-size:12px;color:#1D9E75;font-weight:500;">Massachusetts EOED</div>
+  </div>
+
+</div>
+
+<script>
+let cur = 0;
+const total = 5;
+
+const stages = [
+
+function s0() {
+  return `<div class="surface" style="text-align:center;padding:2rem;">
+    <div style="width:56px;height:56px;border-radius:14px;background:#E1F5EE;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0F6E56" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </div>
+    <div style="font-size:22px;font-weight:500;margin-bottom:8px;">Massachusetts Business Front Door</div>
+    <div style="font-size:14px;color:#666;margin-bottom:2rem;max-width:380px;margin-left:auto;margin-right:auto;line-height:1.6;">Find the right state programs, funding, and support for your business — in under 5 minutes.</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto;">
+      ${[["50+","Programs available"],["$250M","Annual funding"],["13","Partner agencies"]].map(([n,l])=>`
+        <div class="card">
+          <div style="font-size:24px;font-weight:500;color:#1D9E75;">${n}</div>
+          <div style="font-size:12px;color:#666;margin-top:4px;">${l}</div>
+        </div>`).join("")}
+    </div>
+    <button class="btn-primary" onclick="next()">Get started — it's free</button>
+    <div style="font-size:12px;color:#999;margin-top:10px;">No account needed. Takes about 5 minutes.</div>
+  </div>`;
+},
+
+function s1() {
+  const msgs = [
+    {from:"ai", text:"Hi! I'm MassConnect. I'll help you find the right Massachusetts programs for your business — no paperwork, no jargon. Let's start: what does your business do?"},
+    {from:"user", text:"I run a small catering company in Worcester. We do corporate events and have 6 employees."},
+    {from:"ai", text:"Great — a food service business in Worcester with 6 employees. How long have you been operating?"},
+    {from:"user", text:"About 3 years. We're doing well but want to expand and maybe hire 4 more people."},
+    {from:"ai", text:"Excellent. Are you looking for help with financing, hiring support, or both?"},
+    {from:"user", text:"Both, ideally. We also need some equipment — a new commercial kitchen setup."},
+    {from:"ai", text:"Perfect. One last question — are you a minority, women, or veteran-owned business?"},
+    {from:"user", text:"Yes, I'm a woman and a Latina business owner."},
+    {from:"ai", typing:true, text:"Got it. I'm building your profile now and matching you to programs..."},
+  ];
+
+  let html = `<div class="card" style="overflow:hidden;padding:0;">
+    <div style="padding:12px 16px;border-bottom:1px solid #e8e8e6;display:flex;align-items:center;gap:10px;background:#fafaf9;">
+      <div style="width:32px;height:32px;border-radius:8px;background:#E1F5EE;display:flex;align-items:center;justify-content:center;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0F6E56" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      </div>
+      <div style="font-size:13px;font-weight:500;">MassConnect AI</div>
+      <div style="margin-left:auto;font-size:11px;color:#1D9E75;font-weight:500;">● Live</div>
+    </div>
+    <div style="padding:1rem;display:flex;flex-direction:column;gap:10px;max-height:360px;overflow-y:auto;background:#fff;">`;
+
+  msgs.forEach((m,i) => {
+    const isAI = m.from === "ai";
+    const delay = (i * 0.15).toFixed(2);
+    if(m.typing) {
+      html += `<div class="msg" style="display:flex;gap:8px;animation-delay:${delay}s;">
+        <div style="width:28px;height:28px;border-radius:8px;background:#E1F5EE;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:#0F6E56;">MC</div>
+        <div style="background:#f5f5f3;border-radius:12px;padding:10px 14px;font-size:13px;line-height:1.6;max-width:80%;border:1px solid #e8e8e6;">
+          <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+          <span style="font-size:12px;color:#888;margin-left:6px;">${m.text}</span>
+        </div>
+      </div>`;
+    } else if(isAI) {
+      html += `<div class="msg" style="display:flex;gap:8px;animation-delay:${delay}s;">
+        <div style="width:28px;height:28px;border-radius:8px;background:#E1F5EE;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:#0F6E56;">MC</div>
+        <div style="background:#f5f5f3;border-radius:12px;padding:10px 14px;font-size:13px;line-height:1.6;max-width:80%;border:1px solid #e8e8e6;">${m.text}</div>
+      </div>`;
+    } else {
+      html += `<div class="msg" style="display:flex;justify-content:flex-end;animation-delay:${delay}s;">
+        <div style="background:#1D9E75;border-radius:12px;padding:10px 14px;font-size:13px;line-height:1.6;max-width:80%;color:#fff;">${m.text}</div>
+      </div>`;
+    }
+  });
+
+  html += `</div>
+    <div style="padding:10px 12px;border-top:1px solid #e8e8e6;background:#fafaf9;">
+      <div style="display:flex;gap:6px;">
+        <input type="text" placeholder="Profile complete — generating your scorecard..." disabled style="background:#f0f0ee;color:#888;">
+        <button class="btn-primary" style="padding:8px 14px;white-space:nowrap;">→</button>
+      </div>
+    </div>
+  </div>
+  <div class="surface" style="margin-top:10px;padding:12px 16px;">
+    <div style="font-size:11px;color:#666;margin-bottom:6px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;">Conversation progress</div>
+    <div style="background:#ddd;border-radius:2px;height:3px;"><div class="prog-bar" style="width:100%;"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:#999;margin-top:4px;"><span>Started</span><span>Profile complete</span></div>
+  </div>`;
+  return html;
+},
+
+function s2() {
+  return `<div style="display:grid;gap:12px;">
+    <div class="surface">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:1rem;">
+        <div style="width:44px;height:44px;border-radius:12px;background:#E1F5EE;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:#0F6E56;">MR</div>
+        <div>
+          <div style="font-size:15px;font-weight:500;">Maria Rodriguez</div>
+          <div style="font-size:12px;color:#666;">Catering company · Worcester, MA · Founded 2022</div>
+        </div>
+        <div style="margin-left:auto;background:#E1F5EE;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:500;color:#0F6E56;">Profile complete</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;">
+        ${["Food service","Worcester","6 employees","Woman-owned","Latina-owned","Seeking capital","Hiring plans","Equipment needs"].map(t=>`<span class="tag" style="background:#E1F5EE;color:#085041;">${t}</span>`).join("")}
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        ${[["Growth stage","Early expansion"],["Capital need","$75K–$150K"],["Job creation","4 projected hires"],["Region","Central MA"]].map(([l,v])=>`
+          <div class="card" style="padding:10px 12px;">
+            <div style="font-size:11px;color:#666;">${l}</div>
+            <div style="font-size:13px;font-weight:500;margin-top:2px;">${v}</div>
+          </div>`).join("")}
+      </div>
+    </div>
+    <div class="surface">
+      <div style="font-size:14px;font-weight:500;margin-bottom:1rem;">Program matches</div>
+      ${[
+        {name:"MassDevelopment Small Business Loan",agency:"MassDevelopment",match:94,tag:"Best match",why:"Equipment financing up to $500K for MA businesses with 2+ years operation",bg:"#E1F5EE",tc:"#085041",bc:"#1D9E75"},
+        {name:"MWBE Certification + State Contracting",agency:"MOBD",match:88,tag:"High match",why:"Latina woman-owned business qualifies for certified vendor preferences",bg:"#EEEDFE",tc:"#26215C",bc:"#7F77DD"},
+        {name:"Workforce Training Fund",agency:"Commonwealth Corp",match:82,tag:"Strong match",why:"Subsidizes training costs for 4 planned new hires in food service sector",bg:"#FAEEDA",tc:"#412402",bc:"#EF9F27"},
+      ].map(p=>`
+        <div class="card" style="margin-bottom:8px;">
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <div style="flex:1;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;">
+                <span style="font-size:13px;font-weight:500;">${p.name}</span>
+                <span class="tag" style="background:${p.bg};color:${p.tc};">${p.tag}</span>
+              </div>
+              <div style="font-size:11px;color:#666;margin-bottom:10px;">${p.agency} · ${p.why}</div>
+              <div class="score-row">
+                <div style="font-size:11px;color:#666;width:70px;flex-shrink:0;">Match</div>
+                <div style="flex:1;background:#e8e8e6;border-radius:4px;height:8px;"><div class="score-fill" style="width:${p.match}%;background:${p.bc};"></div></div>
+                <div style="font-size:12px;font-weight:500;color:${p.bc};width:36px;text-align:right;">${p.match}%</div>
+              </div>
+            </div>
+          </div>
+        </div>`).join("")}
+    </div>
+  </div>`;
+},
+
+function s3() {
+  return `<div style="display:grid;gap:12px;">
+    <div style="background:#E1F5EE;border-radius:12px;padding:12px 16px;border:1px solid #5DCAA5;">
+      <div style="font-size:12px;font-weight:500;color:#085041;text-transform:uppercase;letter-spacing:0.5px;">EOED Staff Dashboard — Navigator view</div>
+    </div>
+    <div class="surface">
+      <div style="font-size:13px;font-weight:500;margin-bottom:12px;color:#666;">Today's priority queue</div>
+      ${[
+        {name:"Maria Rodriguez",biz:"Catering · Worcester",score:94,tag:"Ready to engage",programs:"3 matches",p:"high"},
+        {name:"James Chen",biz:"Tech startup · Boston",score:88,tag:"Review recommended",programs:"2 matches",p:"high"},
+        {name:"David Okonkwo",biz:"Construction · Springfield",score:74,tag:"Needs info",programs:"1 match",p:"med"},
+        {name:"Sarah Patel",biz:"Retail · Cambridge",score:61,tag:"Early stage",programs:"2 matches",p:"low"},
+      ].map((b,i)=>`
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #e8e8e6;">
+          <div style="width:36px;height:36px;border-radius:10px;background:${i===0?'#E1F5EE':'#f0f0ee'};flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:${i===0?'#0F6E56':'#666'};">${b.name.split(' ').map(n=>n[0]).join('')}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:13px;font-weight:500;">${b.name}</div>
+            <div style="font-size:11px;color:#666;">${b.biz} · ${b.programs}</div>
+          </div>
+          <span class="tag" style="background:${b.p==='high'?'#E1F5EE':b.p==='med'?'#FAEEDA':'#f0f0ee'};color:${b.p==='high'?'#085041':b.p==='med'?'#412402':'#444'};white-space:nowrap;">${b.tag}</span>
+          <div style="font-size:18px;font-weight:500;color:${b.p==='high'?'#1D9E75':b.p==='med'?'#BA7517':'#888'};flex-shrink:0;">${b.score}</div>
+        </div>`).join("")}
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+      ${[["4","Inquiries today"],["12 min","Avg response time"],["89%","Match accuracy"]].map(([v,l])=>`
+        <div class="metric"><div class="metric-val">${v}</div><div class="metric-lbl">${l}</div></div>`).join("")}
+    </div>
+  </div>`;
+},
+
+function s4() {
+  return `<div class="surface" style="text-align:center;padding:2rem;">
+    <div style="width:56px;height:56px;border-radius:50%;background:#E1F5EE;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0F6E56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div style="font-size:20px;font-weight:500;margin-bottom:8px;">Maria is connected</div>
+    <div style="font-size:14px;color:#666;max-width:360px;margin:0 auto 1.5rem;line-height:1.6;">From first contact to matched programs in under 5 minutes. A navigator will follow up within 24 hours.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:400px;margin:0 auto 1.5rem;">
+      ${[["5 min","Time to match"],["3","Programs matched"],["$150K","Potential funding"],["4","Jobs supported"]].map(([v,l])=>`
+        <div class="card" style="padding:14px;">
+          <div style="font-size:22px;font-weight:500;color:#1D9E75;">${v}</div>
+          <div style="font-size:12px;color:#666;margin-top:4px;">${l}</div>
+        </div>`).join("")}
+    </div>
+    <div style="background:#E1F5EE;border-radius:12px;padding:16px;max-width:420px;margin:0 auto;border:1px solid #5DCAA5;text-align:left;">
+      <div style="font-size:13px;font-weight:500;color:#085041;margin-bottom:6px;">Without MassConnect</div>
+      <div style="font-size:13px;color:#0F6E56;line-height:1.6;">Maria would have called a general hotline, waited 3–5 days for a callback, and likely been transferred twice before reaching the right program — if she didn't give up first.</div>
+    </div>
+  </div>`;
+}
+];
+
+function render() {
+  document.getElementById('stage').innerHTML = stages[cur]();
+  const btns = document.querySelectorAll('#nav .step-btn');
+  btns.forEach((b,i) => b.classList.toggle('active', i===cur));
+  document.getElementById('prev-btn').style.display = cur > 0 ? 'block' : 'none';
+  const nb = document.getElementById('next-btn');
+  if(cur === total-1) { nb.textContent = '↺ Restart'; nb.onclick = ()=>{cur=0;render();}; }
+  else { nb.textContent = 'Next →'; nb.onclick = next; }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function next() { if(cur<total-1){cur++;render();} }
+function prev() { if(cur>0){cur--;render();} }
+function goTo(i) { cur=i; render(); }
+render();
+</script>
+</body>
+</html>
