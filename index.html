@@ -3,72 +3,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MassConnect — Massachusetts Business Front Door</title>
+<title>MassConnect — Business Front Door</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f3; color: #1a1a1a; min-height: 100vh; padding: 2rem 1rem; }
-  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-  @keyframes typing { 0%,100%{opacity:1} 50%{opacity:0.3} }
-  @keyframes progress { from{width:0} to{width:100%} }
-  .msg { animation: fadeIn 0.4s ease both; }
-  .typing-dot { animation: typing 1.2s ease infinite; display:inline-block; width:6px; height:6px; border-radius:50%; background:#888; margin:0 2px; }
-  .typing-dot:nth-child(2){animation-delay:.2s}
-  .typing-dot:nth-child(3){animation-delay:.4s}
-  .step-btn { cursor:pointer; border:1px solid #ddd; border-radius:8px; padding:8px 14px; background:#fff; color:#1a1a1a; font-size:13px; transition:background 0.15s; }
-  .step-btn:hover { background:#f0f0ee; }
-  .step-btn.active { background:#1D9E75; border-color:#1D9E75; color:#fff; }
-  .prog-bar { height:3px; background:#1D9E75; border-radius:2px; animation: progress 0.6s ease both; }
-  .score-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
-  .score-fill { height:8px; border-radius:4px; background:#1D9E75; }
-  .tag { display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:500; margin:2px; }
-  .card { background:#fff; border-radius:16px; border:1px solid #e8e8e6; padding:1.25rem; }
-  .surface { background:#f5f5f3; border-radius:16px; padding:1.25rem; }
-  .metric { background:#f5f5f3; border-radius:10px; padding:12px; text-align:center; }
-  .metric-val { font-size:22px; font-weight:500; color:#1D9E75; }
-  .metric-lbl { font-size:11px; color:#666; margin-top:2px; }
-  .nav-wrap { display:flex; gap:8px; margin-bottom:1.5rem; flex-wrap:wrap; }
-  .footer-nav { display:flex; justify-content:space-between; margin-top:1.5rem; }
-  .btn-primary { padding:10px 24px; background:#1D9E75; border:none; border-radius:10px; color:#fff; font-size:14px; cursor:pointer; font-weight:500; }
-  .btn-primary:hover { background:#0F6E56; }
-  .btn-ghost { cursor:pointer; border:1px solid #ddd; border-radius:8px; padding:8px 16px; background:#fff; color:#1a1a1a; font-size:13px; }
-  input[type=text] { width:100%; border:1px solid #ddd; border-radius:8px; padding:10px 14px; font-size:14px; outline:none; }
-  input[type=text]:focus { border-color:#1D9E75; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f2f5;color:#1a1a1a;padding:1.5rem 1rem}
+.wrap{max-width:720px;margin:0 auto}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fillBar{from{width:0}to{width:var(--w)}}
+.fade{animation:fadeUp 0.4s ease both}
+
+/* Nav */
+.nav{display:flex;align-items:center;gap:10px;margin-bottom:1.5rem;padding:12px 16px;background:#fff;border-radius:14px;border:1px solid #e8e8e6}
+.nav-logo{width:32px;height:32px;border-radius:8px;background:#1D9E75;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nav-title{font-size:15px;font-weight:500}
+.nav-sub{font-size:11px;color:#888}
+.nav-badge{margin-left:auto;background:#E1F5EE;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:500;color:#0F6E56}
+
+/* Steps */
+.steps-row{display:flex;gap:6px;margin-bottom:1.5rem;flex-wrap:wrap}
+.step-btn{flex:1;min-width:100px;padding:8px 10px;border:1px solid #e8e8e6;border-radius:10px;background:#fff;font-size:12px;color:#888;cursor:pointer;text-align:center;transition:all 0.2s}
+.step-btn.active{background:#0a2540;border-color:#0a2540;color:#fff;font-weight:500}
+.step-btn.done{background:#E1F5EE;border-color:#1D9E75;color:#0F6E56}
+
+/* Cards */
+.card{background:#fff;border-radius:16px;border:1px solid #e8e8e6;overflow:hidden;margin-bottom:12px}
+.card-header{padding:14px 16px;border-bottom:1px solid #e8e8e6;background:#fafaf9;display:flex;align-items:center;gap:10px}
+.card-body{padding:16px}
+.surface{background:#f8f9fa;border-radius:12px;padding:14px;margin-bottom:10px}
+
+/* Chat */
+.chat-area{display:flex;flex-direction:column;gap:10px;max-height:420px;overflow-y:auto;padding:14px}
+.msg-ai{display:flex;gap:8px;align-items:flex-start}
+.msg-user{display:flex;justify-content:flex-end}
+.bubble-ai{background:#f5f5f3;border:1px solid #e8e8e6;border-radius:12px;padding:10px 14px;font-size:13px;line-height:1.6;max-width:82%}
+.bubble-user{background:#1D9E75;border-radius:12px;padding:10px 14px;font-size:13px;line-height:1.6;max-width:82%;color:#fff}
+.ai-avatar{width:28px;height:28px;border-radius:8px;background:#E1F5EE;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#0F6E56}
+.chat-input{padding:10px 14px;border-top:1px solid #e8e8e6;display:flex;gap:8px;background:#fafaf9}
+.chat-input input{flex:1;border:1px solid #e8e8e6;border-radius:8px;padding:9px 12px;font-size:13px;outline:none;background:#fff}
+.send-btn{padding:9px 16px;background:#1D9E75;border:none;border-radius:8px;color:#fff;font-size:13px;cursor:pointer;font-weight:500}
+
+/* Progress */
+.progress-bar{height:4px;background:#e8e8e6;border-radius:2px;margin-bottom:4px}
+.progress-fill{height:4px;border-radius:2px;background:#1D9E75;transition:width 0.4s ease}
+
+/* Scorecard */
+.section-label{font-size:11px;font-weight:500;color:#999;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px}
+.program-card{border-radius:12px;border:1px solid #e8e8e6;overflow:hidden;margin-bottom:10px}
+.program-header{padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.15s}
+.program-header:hover{background:#f8f9fa}
+.eligibility-badge{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap}
+.program-body{padding:14px;border-top:1px solid #e8e8e6;display:none}
+.program-body.open{display:block}
+.criteria-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0ee}
+.criteria-row:last-child{border-bottom:none}
+.criteria-icon{width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.criteria-label{font-size:13px;font-weight:500;margin-bottom:2px}
+.criteria-detail{font-size:12px;color:#666;line-height:1.5}
+.criteria-tip{font-size:11px;margin-top:4px;padding:6px 10px;border-radius:6px;line-height:1.5}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;margin:2px}
+
+/* Staff */
+.priority-row{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;margin-bottom:8px;cursor:pointer;transition:background 0.15s;border:1px solid transparent}
+.priority-row:hover{background:#f8f9fa;border-color:#e8e8e6}
+.priority-row.selected{background:#E1F5EE;border-color:#1D9E75}
+.score-circle{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500;flex-shrink:0}
+.impact-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.impact-item{background:#f8f9fa;border-radius:8px;padding:8px 10px}
+.impact-label{font-size:11px;color:#888;margin-bottom:2px}
+.impact-val{font-size:12px;font-weight:500}
+.white-glove{background:#0a2540;color:#fff;border-radius:6px;padding:3px 10px;font-size:11px;font-weight:500}
+
+/* Buttons */
+.btn-primary{padding:10px 20px;background:#1D9E75;border:none;border-radius:10px;color:#fff;font-size:13px;cursor:pointer;font-weight:500;transition:background 0.2s}
+.btn-primary:hover{background:#0F6E56}
+.btn-ghost{padding:8px 16px;border:1px solid #e8e8e6;border-radius:10px;background:#fff;font-size:13px;cursor:pointer;color:#444;transition:background 0.15s}
+.btn-ghost:hover{background:#f5f5f3}
+.footer-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1rem}
+
+@media(max-width:520px){.steps-row .step-btn{min-width:80px;font-size:11px}.impact-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<div style="max-width:680px;margin:0 auto;">
-
-  <div style="display:flex;align-items:center;gap:12px;margin-bottom:2rem;">
-    <div style="width:40px;height:40px;border-radius:10px;background:#E1F5EE;display:flex;align-items:center;justify-content:center;">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0F6E56" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    </div>
-    <div>
-      <div style="font-size:16px;font-weight:500;">MassConnect</div>
-      <div style="font-size:12px;color:#666;">Massachusetts Business Front Door — Interactive Demo</div>
-    </div>
-    <div style="margin-left:auto;background:#E1F5EE;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:500;color:#0F6E56;">Concept Demo</div>
+<div class="nav">
+  <div class="nav-logo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
   </div>
-
-  <div class="nav-wrap" id="nav">
-    <button class="step-btn active" onclick="goTo(0)">1. Enter</button>
-    <button class="step-btn" onclick="goTo(1)">2. Conversation</button>
-    <button class="step-btn" onclick="goTo(2)">3. Scorecard</button>
-    <button class="step-btn" onclick="goTo(3)">4. Staff view</button>
-    <button class="step-btn" onclick="goTo(4)">5. Outcome</button>
+  <div>
+    <div class="nav-title">MassConnect</div>
+    <div class="nav-sub">Massachusetts Business Front Door</div>
   </div>
+  <div class="nav-badge">Interactive Demo</div>
+</div>
 
-  <div id="stage"></div>
+<div class="steps-row" id="steps-row">
+  <button class="step-btn active" onclick="goTo(0)">1. Welcome</button>
+  <button class="step-btn" onclick="goTo(1)">2. Conversation</button>
+  <button class="step-btn" onclick="goTo(2)">3. Scorecard</button>
+  <button class="step-btn" onclick="goTo(3)">4. Application Prep</button>
+  <button class="step-btn" onclick="goTo(4)">5. Staff View</button>
+</div>
 
-  <div class="footer-nav">
-    <button class="btn-ghost" id="prev-btn" onclick="prev()" style="display:none;">← Back</button>
-    <button class="btn-primary" id="next-btn" onclick="next()" style="margin-left:auto;">Next →</button>
-  </div>
+<div id="stage"></div>
 
-  <div style="margin-top:2rem;padding-top:1rem;border-top:1px solid #e8e8e6;display:flex;justify-content:space-between;align-items:center;">
-    <div style="font-size:12px;color:#999;">MassConnect concept demo — built for EOED Business Front Door initiative</div>
-    <div style="font-size:12px;color:#1D9E75;font-weight:500;">Massachusetts EOED</div>
-  </div>
+<div class="footer-nav">
+  <button class="btn-ghost" id="prev-btn" onclick="prev()" style="display:none">← Back</button>
+  <button class="btn-primary" id="next-btn" onclick="next()" style="margin-left:auto">Next →</button>
+</div>
 
 </div>
 
@@ -76,203 +118,436 @@
 let cur = 0;
 const total = 5;
 
-const stages = [
-
-function s0() {
-  return `<div class="surface" style="text-align:center;padding:2rem;">
-    <div style="width:56px;height:56px;border-radius:14px;background:#E1F5EE;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0F6E56" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+// ── STAGE 0: WELCOME ──────────────────────────────────────────────
+function s0(){return`
+<div class="card fade">
+  <div style="background:#0a2540;padding:2.5rem 2rem;text-align:center">
+    <div style="width:60px;height:60px;border-radius:16px;background:#1D9E75;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     </div>
-    <div style="font-size:22px;font-weight:500;margin-bottom:8px;">Massachusetts Business Front Door</div>
-    <div style="font-size:14px;color:#666;margin-bottom:2rem;max-width:380px;margin-left:auto;margin-right:auto;line-height:1.6;">Find the right state programs, funding, and support for your business — in under 5 minutes.</div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto;">
-      ${[["50+","Programs available"],["$250M","Annual funding"],["13","Partner agencies"]].map(([n,l])=>`
-        <div class="card">
-          <div style="font-size:24px;font-weight:500;color:#1D9E75;">${n}</div>
-          <div style="font-size:12px;color:#666;margin-top:4px;">${l}</div>
-        </div>`).join("")}
+    <div style="font-size:26px;font-weight:500;color:#fff;margin-bottom:8px">Find the right support<br>for your business</div>
+    <div style="font-size:14px;color:#8aa0b8;max-width:400px;margin:0 auto 2rem;line-height:1.6">Answer a few plain-language questions. We'll match you to Massachusetts programs you qualify for — and help you apply.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;max-width:420px;margin:0 auto">
+      ${[["50+","Programs"],["$250M","Annual funding"],["5 min","To complete"]].map(([v,l])=>`
+      <div style="background:rgba(255,255,255,0.08);border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,0.1)">
+        <div style="font-size:20px;font-weight:500;color:#5DCAA5">${v}</div>
+        <div style="font-size:11px;color:#8aa0b8;margin-top:3px">${l}</div>
+      </div>`).join("")}
     </div>
-    <button class="btn-primary" onclick="next()">Get started — it's free</button>
-    <div style="font-size:12px;color:#999;margin-top:10px;">No account needed. Takes about 5 minutes.</div>
-  </div>`;
-},
+  </div>
+  <div style="padding:1.5rem;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+    ${[
+      ["💬","Guided conversation","Answer plain-language questions about your business"],
+      ["📋","Instant scorecard","See which programs you qualify for and why"],
+      ["📝","Application prep","Let AI help you draft your application"]
+    ].map(([ic,t,d])=>`
+    <div style="background:#f8f9fa;border-radius:10px;padding:12px;text-align:center">
+      <div style="font-size:22px;margin-bottom:6px">${ic}</div>
+      <div style="font-size:13px;font-weight:500;margin-bottom:4px">${t}</div>
+      <div style="font-size:11px;color:#666;line-height:1.5">${d}</div>
+    </div>`).join("")}
+  </div>
+</div>`}
 
-function s1() {
-  const msgs = [
-    {from:"ai", text:"Hi! I'm MassConnect. I'll help you find the right Massachusetts programs for your business — no paperwork, no jargon. Let's start: what does your business do?"},
-    {from:"user", text:"I run a small catering company in Worcester. We do corporate events and have 6 employees."},
-    {from:"ai", text:"Great — a food service business in Worcester with 6 employees. How long have you been operating?"},
-    {from:"user", text:"About 3 years. We're doing well but want to expand and maybe hire 4 more people."},
-    {from:"ai", text:"Excellent. Are you looking for help with financing, hiring support, or both?"},
-    {from:"user", text:"Both, ideally. We also need some equipment — a new commercial kitchen setup."},
-    {from:"ai", text:"Perfect. One last question — are you a minority, women, or veteran-owned business?"},
-    {from:"user", text:"Yes, I'm a woman and a Latina business owner."},
-    {from:"ai", typing:true, text:"Got it. I'm building your profile now and matching you to programs..."},
-  ];
+// ── STAGE 1: CONVERSATION ─────────────────────────────────────────
+function s1(){
+const msgs=[
+  {a:"Hi! I'm MassConnect. I'll help you find the right Massachusetts programs — no jargon, no forms. Let's start: what does your business do and where are you located?"},
+  {u:"I run a catering company in Worcester. We do corporate events and have 6 employees."},
+  {a:"Thank you — a food service business in Worcester with 6 employees. How long have you been operating, and roughly what was your annual revenue last year?"},
+  {u:"About 3 years. Revenue was around $380,000 last year."},
+  {a:"Got it. Are you looking to expand? If so, are you thinking about hiring, equipment, a new location, or something else?"},
+  {u:"All three really — we want to hire 4 more people, buy commercial kitchen equipment, and eventually open a second location."},
+  {a:"That's helpful. Are you a minority, women, or veteran-owned business?"},
+  {u:"Yes — I'm a Latina woman and I own the business outright."},
+  {a:"Are there any specific Massachusetts programs you've heard about that you'd like to be considered for? For example, EDIP, MassDevelopment loans, or MWBE certification?"},
+  {u:"I've heard about EDIP and I think I might qualify. Also interested in any clean energy grants if there are any."},
+  {a:"Noted — I'll assess your eligibility for EDIP and clean energy programs specifically. A few more questions: do you have collateral available such as equipment or property? And have you applied for any state programs before?"},
+  {u:"I own some equipment that could be collateral. Never applied before — this is my first time."},
+  {a:"Perfect — that's really helpful context. I have everything I need. Let me build your profile and assess your eligibility across our programs now..."},
+];
+return`
+<div class="card fade">
+  <div class="card-header">
+    <div class="ai-avatar">MC</div>
+    <div>
+      <div style="font-size:13px;font-weight:500">MassConnect AI</div>
+      <div style="font-size:11px;color:#888">Eligibility assessment in progress</div>
+    </div>
+    <div style="margin-left:auto;font-size:11px;color:#1D9E75;font-weight:500">● Live</div>
+  </div>
+  <div class="chat-area">
+    ${msgs.map((m,i)=>m.a?`
+    <div class="msg-ai fade" style="animation-delay:${i*0.08}s">
+      <div class="ai-avatar">MC</div>
+      <div class="bubble-ai">${m.a}</div>
+    </div>`:m.u?`
+    <div class="msg-user fade" style="animation-delay:${i*0.08}s">
+      <div class="bubble-user">${m.u}</div>
+    </div>`:"").join("")}
+  </div>
+  <div class="chat-input">
+    <input type="text" placeholder="Profile complete — building your scorecard..." disabled style="background:#f0f0ee;color:#888">
+    <button class="send-btn">→</button>
+  </div>
+</div>
+<div style="background:#fff;border-radius:12px;padding:12px 16px;border:1px solid #e8e8e6;margin-top:0">
+  <div style="font-size:11px;color:#888;margin-bottom:6px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px">Conversation progress</div>
+  <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+  <div style="display:flex;justify-content:space-between;font-size:11px;color:#aaa;margin-top:4px"><span>Started</span><span>✓ Profile complete</span></div>
+</div>`}
 
-  let html = `<div class="card" style="overflow:hidden;padding:0;">
-    <div style="padding:12px 16px;border-bottom:1px solid #e8e8e6;display:flex;align-items:center;gap:10px;background:#fafaf9;">
-      <div style="width:32px;height:32px;border-radius:8px;background:#E1F5EE;display:flex;align-items:center;justify-content:center;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0F6E56" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+// ── STAGE 2: SCORECARD ────────────────────────────────────────────
+function s2(){
+const selfNom=[
+  {
+    name:"Economic Development Incentive Program (EDIP)",
+    agency:"MassEcon",
+    status:"partial",
+    why:"EDIP requires a minimum capital investment of $500K or 10 net new full-time jobs. Maria's current expansion plan falls below both thresholds.",
+    criteria:[
+      {met:"no",label:"Capital investment threshold",detail:"EDIP requires $500K+ in capital investment. Current plan is estimated at $180K.",tip:"Consider phasing expansion plans to reach the $500K threshold, or explore EDIP's Small Business Program which has lower thresholds."},
+      {met:"yes",label:"Massachusetts-based business",detail:"Worcester location confirmed. Meets geographic requirement."},
+      {met:"yes",label:"For-profit business",detail:"Confirmed for-profit catering operation."},
+      {met:"no",label:"10 net new full-time jobs",detail:"Plan is for 4 new hires. EDIP standard requires 10 net new FTEs.",tip:"If hiring plans scale to 10+ over 3 years, EDIP becomes viable. Discuss timeline with a navigator."},
+      {met:"partial",label:"Local government sponsorship",detail:"Requires municipal sponsor. Worcester has an active economic development office.",tip:"Contact Worcester Office of Economic Development to explore sponsorship before applying."},
+    ]
+  },
+  {
+    name:"MassCEC Clean Energy Grant",
+    agency:"MassCEC",
+    status:"no",
+    why:"Clean energy grants through MassCEC target energy technology companies and clean energy manufacturers. Food service businesses are not a primary eligible category.",
+    criteria:[
+      {met:"no",label:"Clean energy sector business",detail:"Catering is not classified as a clean energy business.",tip:"MassCEC does offer energy efficiency upgrades for small businesses. Ask your navigator about the Mass Save program which may be a better fit."},
+      {met:"yes",label:"Massachusetts-based",detail:"Worcester location confirmed."},
+      {met:"no",label:"Clean energy product or service",detail:"No clean energy product or service offering identified.",tip:"If the new kitchen equipment includes energy-efficient systems, explore Mass Save incentives instead."},
+    ]
+  }
+];
+
+const aiRec=[
+  {
+    name:"MassDevelopment Small Business Loan",
+    agency:"MassDevelopment",
+    status:"strong",
+    why:"Strong fit. 3-year operating history, $380K revenue, equipment collateral available, and expansion plans align directly with this program's purpose.",
+    criteria:[
+      {met:"yes",label:"2+ years in operation",detail:"3 years confirmed. Meets requirement."},
+      {met:"yes",label:"Massachusetts-based business",detail:"Worcester location confirmed."},
+      {met:"partial",label:"Revenue and financial health",detail:"$380K revenue is within range. Lender will review full financials.",tip:"Prepare 2 years of tax returns and a simple cash flow projection before applying."},
+      {met:"yes",label:"Equipment or working capital purpose",detail:"Commercial kitchen equipment purchase is an eligible use of funds."},
+      {met:"yes",label:"Collateral available",detail:"Existing equipment confirmed as potential collateral."},
+    ]
+  },
+  {
+    name:"MWBE Certification + State Contracting",
+    agency:"MOBD",
+    status:"strong",
+    why:"As a Latina woman-owned business, Maria is highly likely to qualify for MWBE certification, which opens access to state contracting preferences and set-asides.",
+    criteria:[
+      {met:"yes",label:"Women-owned business",detail:"100% woman-owned confirmed."},
+      {met:"yes",label:"Minority-owned business",detail:"Latina ownership confirmed."},
+      {met:"yes",label:"For-profit Massachusetts business",detail:"Confirmed."},
+      {met:"partial",label:"Owner day-to-day control",detail:"Owner operates the business. Documentation of management control required.",tip:"Prepare an org chart and brief description of your management role for the application."},
+    ]
+  },
+  {
+    name:"Workforce Training Fund",
+    agency:"Commonwealth Corporation",
+    status:"good",
+    why:"Good fit for subsidizing training costs for 4 planned new hires. Food service is an eligible industry.",
+    criteria:[
+      {met:"yes",label:"Massachusetts employer",detail:"Worcester-based employer confirmed."},
+      {met:"yes",label:"Paying into UI system",detail:"6 current employees means active UI contributions."},
+      {met:"yes",label:"Training for new or existing workers",detail:"4 planned hires qualify as new worker training."},
+      {met:"partial",label:"Approved training provider",detail:"Training must be through an approved provider.",tip:"WorkForce Central in Worcester has approved training programs for food service businesses."},
+    ]
+  }
+];
+
+function programCard(p, selfNom){
+  const colors={
+    strong:{bg:"#E1F5EE",tc:"#085041",bc:"#1D9E75",label:"Strong fit"},
+    good:{bg:"#E6F1FB",tc:"#042C53",bc:"#378ADD",label:"Good fit"},
+    partial:{bg:"#FAEEDA",tc:"#412402",bc:"#EF9F27",label:"Partial fit"},
+    no:{bg:"#FAECE7",tc:"#712B13",bc:"#D85A30",label:"Not a fit"}
+  };
+  const c=colors[p.status];
+  const id="prog-"+Math.random().toString(36).substr(2,6);
+  return`
+  <div class="program-card">
+    <div class="program-header" onclick="toggleProg('${id}')">
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:500;margin-bottom:2px">${p.name}</div>
+        <div style="font-size:11px;color:#888">${p.agency}</div>
       </div>
-      <div style="font-size:13px;font-weight:500;">MassConnect AI</div>
-      <div style="margin-left:auto;font-size:11px;color:#1D9E75;font-weight:500;">● Live</div>
+      <span class="eligibility-badge" style="background:${c.bg};color:${c.tc}">${c.label}</span>
+      <span style="color:#aaa;margin-left:8px;font-size:12px" id="arr-${id}">▼</span>
     </div>
-    <div style="padding:1rem;display:flex;flex-direction:column;gap:10px;max-height:360px;overflow-y:auto;background:#fff;">`;
+    <div class="program-body" id="${id}">
+      <div style="font-size:13px;color:#444;margin-bottom:12px;line-height:1.6;padding:10px;background:#f8f9fa;border-radius:8px">${p.why}</div>
+      <div style="font-size:11px;font-weight:500;color:#999;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Criteria breakdown</div>
+      ${p.criteria.map(cr=>{
+        const icon=cr.met==="yes"?`<div class="criteria-icon" style="background:#1D9E75"><svg width="10" height="10" viewBox="0 0 10 10"><polyline points="1 5 4 8 9 2" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>`:
+          cr.met==="partial"?`<div class="criteria-icon" style="background:#EF9F27"><svg width="10" height="10" viewBox="0 0 10 10"><line x1="5" y1="2" x2="5" y2="6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><circle cx="5" cy="8" r="0.8" fill="#fff"/></svg></div>`:
+          `<div class="criteria-icon" style="background:#D85A30"><svg width="10" height="10" viewBox="0 0 10 10"><line x1="2" y1="2" x2="8" y2="8" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="2" x2="2" y2="8" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>`;
+        return`<div class="criteria-row">
+          ${icon}
+          <div style="flex:1">
+            <div class="criteria-label">${cr.label}</div>
+            <div class="criteria-detail">${cr.detail}</div>
+            ${cr.tip?`<div class="criteria-tip" style="background:#EEF6FF;color:#1a4fa0">💡 ${cr.tip}</div>`:""}
+          </div>
+        </div>`}).join("")}
+    </div>
+  </div>`;}
 
-  msgs.forEach((m,i) => {
-    const isAI = m.from === "ai";
-    const delay = (i * 0.15).toFixed(2);
-    if(m.typing) {
-      html += `<div class="msg" style="display:flex;gap:8px;animation-delay:${delay}s;">
-        <div style="width:28px;height:28px;border-radius:8px;background:#E1F5EE;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:#0F6E56;">MC</div>
-        <div style="background:#f5f5f3;border-radius:12px;padding:10px 14px;font-size:13px;line-height:1.6;max-width:80%;border:1px solid #e8e8e6;">
-          <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
-          <span style="font-size:12px;color:#888;margin-left:6px;">${m.text}</span>
-        </div>
-      </div>`;
-    } else if(isAI) {
-      html += `<div class="msg" style="display:flex;gap:8px;animation-delay:${delay}s;">
-        <div style="width:28px;height:28px;border-radius:8px;background:#E1F5EE;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:#0F6E56;">MC</div>
-        <div style="background:#f5f5f3;border-radius:12px;padding:10px 14px;font-size:13px;line-height:1.6;max-width:80%;border:1px solid #e8e8e6;">${m.text}</div>
-      </div>`;
-    } else {
-      html += `<div class="msg" style="display:flex;justify-content:flex-end;animation-delay:${delay}s;">
-        <div style="background:#1D9E75;border-radius:12px;padding:10px 14px;font-size:13px;line-height:1.6;max-width:80%;color:#fff;">${m.text}</div>
-      </div>`;
-    }
-  });
-
-  html += `</div>
-    <div style="padding:10px 12px;border-top:1px solid #e8e8e6;background:#fafaf9;">
-      <div style="display:flex;gap:6px;">
-        <input type="text" placeholder="Profile complete — generating your scorecard..." disabled style="background:#f0f0ee;color:#888;">
-        <button class="btn-primary" style="padding:8px 14px;white-space:nowrap;">→</button>
+return`
+<div class="fade">
+  <div style="display:flex;gap:10px;margin-bottom:12px">
+    <div style="flex:1;background:#fff;border-radius:12px;border:1px solid #e8e8e6;padding:14px">
+      <div style="font-size:11px;color:#888;margin-bottom:6px">Business profile</div>
+      <div style="font-size:14px;font-weight:500">Maria Rodriguez</div>
+      <div style="font-size:12px;color:#666;margin-bottom:8px">Catering · Worcester · Est. 2022</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px">
+        ${["Woman-owned","Latina-owned","6 employees","$380K revenue","Seeking capital","Hiring plans"].map(t=>`<span class="tag" style="background:#E1F5EE;color:#085041">${t}</span>`).join("")}
       </div>
     </div>
   </div>
-  <div class="surface" style="margin-top:10px;padding:12px 16px;">
-    <div style="font-size:11px;color:#666;margin-bottom:6px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;">Conversation progress</div>
-    <div style="background:#ddd;border-radius:2px;height:3px;"><div class="prog-bar" style="width:100%;"></div></div>
-    <div style="display:flex;justify-content:space-between;font-size:11px;color:#999;margin-top:4px;"><span>Started</span><span>Profile complete</span></div>
-  </div>`;
-  return html;
-},
 
-function s2() {
-  return `<div style="display:grid;gap:12px;">
-    <div class="surface">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:1rem;">
-        <div style="width:44px;height:44px;border-radius:12px;background:#E1F5EE;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:#0F6E56;">MR</div>
-        <div>
-          <div style="font-size:15px;font-weight:500;">Maria Rodriguez</div>
-          <div style="font-size:12px;color:#666;">Catering company · Worcester, MA · Founded 2022</div>
-        </div>
-        <div style="margin-left:auto;background:#E1F5EE;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:500;color:#0F6E56;">Profile complete</div>
+  <div class="section-label">Programs you asked about</div>
+  <div style="margin-bottom:16px">
+    ${selfNom.map(p=>programCard(p,true)).join("")}
+  </div>
+
+  <div class="section-label">Programs we recommend for you</div>
+  <div style="margin-bottom:4px">
+    ${aiRec.map(p=>programCard(p,false)).join("")}
+  </div>
+</div>`}
+
+// ── STAGE 3: APPLICATION PREP ─────────────────────────────────────
+function s3(){return`
+<div class="fade">
+  <div class="card">
+    <div class="card-header" style="background:#E1F5EE;border-bottom:1px solid #c8ead8">
+      <div style="width:28px;height:28px;border-radius:8px;background:#1D9E75;display:flex;align-items:center;justify-content:center">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       </div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;">
-        ${["Food service","Worcester","6 employees","Woman-owned","Latina-owned","Seeking capital","Hiring plans","Equipment needs"].map(t=>`<span class="tag" style="background:#E1F5EE;color:#085041;">${t}</span>`).join("")}
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        ${[["Growth stage","Early expansion"],["Capital need","$75K–$150K"],["Job creation","4 projected hires"],["Region","Central MA"]].map(([l,v])=>`
-          <div class="card" style="padding:10px 12px;">
-            <div style="font-size:11px;color:#666;">${l}</div>
-            <div style="font-size:13px;font-weight:500;margin-top:2px;">${v}</div>
-          </div>`).join("")}
+      <div>
+        <div style="font-size:13px;font-weight:500;color:#085041">Application prep — MassDevelopment Small Business Loan</div>
+        <div style="font-size:11px;color:#0F6E56">Pre-populated from your conversation · Review and complete missing sections</div>
       </div>
     </div>
-    <div class="surface">
-      <div style="font-size:14px;font-weight:500;margin-bottom:1rem;">Program matches</div>
+    <div class="card-body">
       ${[
-        {name:"MassDevelopment Small Business Loan",agency:"MassDevelopment",match:94,tag:"Best match",why:"Equipment financing up to $500K for MA businesses with 2+ years operation",bg:"#E1F5EE",tc:"#085041",bc:"#1D9E75"},
-        {name:"MWBE Certification + State Contracting",agency:"MOBD",match:88,tag:"High match",why:"Latina woman-owned business qualifies for certified vendor preferences",bg:"#EEEDFE",tc:"#26215C",bc:"#7F77DD"},
-        {name:"Workforce Training Fund",agency:"Commonwealth Corp",match:82,tag:"Strong match",why:"Subsidizes training costs for 4 planned new hires in food service sector",bg:"#FAEEDA",tc:"#412402",bc:"#EF9F27"},
-      ].map(p=>`
-        <div class="card" style="margin-bottom:8px;">
-          <div style="display:flex;align-items:flex-start;gap:10px;">
-            <div style="flex:1;">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;">
-                <span style="font-size:13px;font-weight:500;">${p.name}</span>
-                <span class="tag" style="background:${p.bg};color:${p.tc};">${p.tag}</span>
-              </div>
-              <div style="font-size:11px;color:#666;margin-bottom:10px;">${p.agency} · ${p.why}</div>
-              <div class="score-row">
-                <div style="font-size:11px;color:#666;width:70px;flex-shrink:0;">Match</div>
-                <div style="flex:1;background:#e8e8e6;border-radius:4px;height:8px;"><div class="score-fill" style="width:${p.match}%;background:${p.bc};"></div></div>
-                <div style="font-size:12px;font-weight:500;color:${p.bc};width:36px;text-align:right;">${p.match}%</div>
-              </div>
-            </div>
+        {label:"Business name",val:"Maria's Catering Co.",status:"complete"},
+        {label:"Business address",val:"Worcester, MA",status:"complete"},
+        {label:"Years in operation",val:"3 years (Est. 2022)",status:"complete"},
+        {label:"Number of employees",val:"6 full-time",status:"complete"},
+        {label:"Annual revenue",val:"$380,000",status:"complete"},
+        {label:"Loan amount requested",val:"$150,000 (estimated)",status:"review"},
+        {label:"Purpose of funds",val:"Commercial kitchen equipment purchase and working capital for expansion",status:"complete"},
+        {label:"Collateral offered",val:"Existing kitchen equipment (approx. value TBD)",status:"review"},
+        {label:"Projected new jobs",val:"4 full-time positions within 18 months",status:"complete"},
+        {label:"Business tax returns (2 years)",val:"Not yet uploaded",status:"missing"},
+        {label:"Personal financial statement",val:"Not yet completed",status:"missing"},
+        {label:"Business plan or growth narrative",val:"Not yet completed",status:"missing"},
+      ].map(f=>{
+        const s=f.status==="complete"?{bg:"#E1F5EE",tc:"#085041",ic:"✓",lbl:"Pre-filled"}:
+          f.status==="review"?{bg:"#FAEEDA",tc:"#412402",ic:"~",lbl:"Review"}:
+          {bg:"#FAECE7",tc:"#712B13",ic:"!",lbl:"Required"};
+        return`<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f0f0ee">
+          <div style="width:22px;height:22px;border-radius:6px;background:${s.bg};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:${s.tc};flex-shrink:0">${s.ic}</div>
+          <div style="flex:1">
+            <div style="font-size:12px;color:#888">${f.label}</div>
+            <div style="font-size:13px;font-weight:500;color:${f.status==="missing"?"#aaa":"#1a1a1a"}">${f.val}</div>
           </div>
-        </div>`).join("")}
+          <span style="background:${s.bg};color:${s.tc};font-size:10px;font-weight:500;padding:2px 8px;border-radius:10px">${s.lbl}</span>
+        </div>`}).join("")}
+      <div style="margin-top:16px;background:#EEF6FF;border-radius:10px;padding:12px;border:1px solid #bbd4f5">
+        <div style="font-size:12px;font-weight:500;color:#1a4fa0;margin-bottom:4px">💡 Next steps from your navigator</div>
+        <div style="font-size:12px;color:#1a4fa0;line-height:1.6">Gather your last 2 years of business tax returns and a simple one-page cash flow projection. Your navigator at MassDevelopment will review your collateral value during your first meeting. MWBE certification application can run in parallel — ask about the combined timeline.</div>
+      </div>
     </div>
-  </div>`;
-},
+  </div>
+</div>`}
 
-function s3() {
-  return `<div style="display:grid;gap:12px;">
-    <div style="background:#E1F5EE;border-radius:12px;padding:12px 16px;border:1px solid #5DCAA5;">
-      <div style="font-size:12px;font-weight:500;color:#085041;text-transform:uppercase;letter-spacing:0.5px;">EOED Staff Dashboard — Navigator view</div>
-    </div>
-    <div class="surface">
-      <div style="font-size:13px;font-weight:500;margin-bottom:12px;color:#666;">Today's priority queue</div>
-      ${[
-        {name:"Maria Rodriguez",biz:"Catering · Worcester",score:94,tag:"Ready to engage",programs:"3 matches",p:"high"},
-        {name:"James Chen",biz:"Tech startup · Boston",score:88,tag:"Review recommended",programs:"2 matches",p:"high"},
-        {name:"David Okonkwo",biz:"Construction · Springfield",score:74,tag:"Needs info",programs:"1 match",p:"med"},
-        {name:"Sarah Patel",biz:"Retail · Cambridge",score:61,tag:"Early stage",programs:"2 matches",p:"low"},
-      ].map((b,i)=>`
-        <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #e8e8e6;">
-          <div style="width:36px;height:36px;border-radius:10px;background:${i===0?'#E1F5EE':'#f0f0ee'};flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:${i===0?'#0F6E56':'#666'};">${b.name.split(' ').map(n=>n[0]).join('')}</div>
-          <div style="flex:1;min-width:0;">
-            <div style="font-size:13px;font-weight:500;">${b.name}</div>
-            <div style="font-size:11px;color:#666;">${b.biz} · ${b.programs}</div>
-          </div>
-          <span class="tag" style="background:${b.p==='high'?'#E1F5EE':b.p==='med'?'#FAEEDA':'#f0f0ee'};color:${b.p==='high'?'#085041':b.p==='med'?'#412402':'#444'};white-space:nowrap;">${b.tag}</span>
-          <div style="font-size:18px;font-weight:500;color:${b.p==='high'?'#1D9E75':b.p==='med'?'#BA7517':'#888'};flex-shrink:0;">${b.score}</div>
-        </div>`).join("")}
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
-      ${[["4","Inquiries today"],["12 min","Avg response time"],["89%","Match accuracy"]].map(([v,l])=>`
-        <div class="metric"><div class="metric-val">${v}</div><div class="metric-lbl">${l}</div></div>`).join("")}
-    </div>
-  </div>`;
-},
-
-function s4() {
-  return `<div class="surface" style="text-align:center;padding:2rem;">
-    <div style="width:56px;height:56px;border-radius:50%;background:#E1F5EE;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0F6E56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div style="font-size:20px;font-weight:500;margin-bottom:8px;">Maria is connected</div>
-    <div style="font-size:14px;color:#666;max-width:360px;margin:0 auto 1.5rem;line-height:1.6;">From first contact to matched programs in under 5 minutes. A navigator will follow up within 24 hours.</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:400px;margin:0 auto 1.5rem;">
-      ${[["5 min","Time to match"],["3","Programs matched"],["$150K","Potential funding"],["4","Jobs supported"]].map(([v,l])=>`
-        <div class="card" style="padding:14px;">
-          <div style="font-size:22px;font-weight:500;color:#1D9E75;">${v}</div>
-          <div style="font-size:12px;color:#666;margin-top:4px;">${l}</div>
-        </div>`).join("")}
-    </div>
-    <div style="background:#E1F5EE;border-radius:12px;padding:16px;max-width:420px;margin:0 auto;border:1px solid #5DCAA5;text-align:left;">
-      <div style="font-size:13px;font-weight:500;color:#085041;margin-bottom:6px;">Without MassConnect</div>
-      <div style="font-size:13px;color:#0F6E56;line-height:1.6;">Maria would have called a general hotline, waited 3–5 days for a callback, and likely been transferred twice before reaching the right program — if she didn't give up first.</div>
-    </div>
-  </div>`;
-}
+// ── STAGE 4: STAFF VIEW ───────────────────────────────────────────
+function s4(){
+const businesses=[
+  {
+    name:"Maria Rodriguez",biz:"Catering · Worcester",score:88,tier:"white-glove",
+    programs:[
+      {name:"MassDevelopment Loan",status:"strong",impact:{jobs:"High",region:"High",diversity:"High",sector:"Medium",sustainability:"Low"}},
+      {name:"MWBE Certification",status:"strong",impact:{jobs:"Medium",region:"High",diversity:"High",sector:"Medium",sustainability:"Low"}},
+      {name:"Workforce Training Fund",status:"good",impact:{jobs:"High",region:"Medium",diversity:"High",sector:"Low",sustainability:"Low"}},
+      {name:"EDIP",status:"partial",impact:{jobs:"Low",region:"Medium",diversity:"High",sector:"Low",sustainability:"Low"}},
+    ]
+  },
+  {
+    name:"James Chen",biz:"AI startup · Boston",score:82,tier:"priority",
+    programs:[
+      {name:"MassTech AI Program",status:"strong",impact:{jobs:"High",region:"Medium",diversity:"Medium",sector:"High",sustainability:"Medium"}},
+      {name:"MLSC Tax Incentive",status:"good",impact:{jobs:"High",region:"Low",diversity:"Medium",sector:"High",sustainability:"Low"}},
+    ]
+  },
+  {
+    name:"GreenBuild Co.",biz:"Construction · Springfield",score:76,tier:"standard",
+    programs:[
+      {name:"MassCEC Clean Energy",status:"strong",impact:{jobs:"Medium",region:"High",diversity:"Low",sector:"High",sustainability:"High"}},
+      {name:"MassDevelopment Loan",status:"good",impact:{jobs:"Medium",region:"High",diversity:"Low",sector:"Medium",sustainability:"High"}},
+    ]
+  },
+  {
+    name:"Sarah Patel",biz:"Retail · Cambridge",score:61,tier:"standard",
+    programs:[
+      {name:"SBDC Counseling",status:"good",impact:{jobs:"Low",region:"Low",diversity:"High",sector:"Low",sustainability:"Low"}},
+    ]
+  }
 ];
 
-function render() {
-  document.getElementById('stage').innerHTML = stages[cur]();
-  const btns = document.querySelectorAll('#nav .step-btn');
-  btns.forEach((b,i) => b.classList.toggle('active', i===cur));
-  document.getElementById('prev-btn').style.display = cur > 0 ? 'block' : 'none';
-  const nb = document.getElementById('next-btn');
-  if(cur === total-1) { nb.textContent = '↺ Restart'; nb.onclick = ()=>{cur=0;render();}; }
-  else { nb.textContent = 'Next →'; nb.onclick = next; }
-  window.scrollTo({top:0,behavior:'smooth'});
+const impactColor={High:"#1D9E75",Medium:"#EF9F27",Low:"#aaa"};
+
+return`
+<div class="fade">
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">
+    ${[["4","Inquiries today"],["500","1:1 slots this year"],["88","Avg score top tier"]].map(([v,l])=>`
+    <div style="background:#fff;border-radius:10px;border:1px solid #e8e8e6;padding:12px;text-align:center">
+      <div style="font-size:22px;font-weight:500;color:#0a2540">${v}</div>
+      <div style="font-size:11px;color:#888;margin-top:3px">${l}</div>
+    </div>`).join("")}
+  </div>
+
+  <div style="display:grid;grid-template-columns:280px 1fr;gap:12px;align-items:start">
+    <div style="background:#fff;border-radius:14px;border:1px solid #e8e8e6;padding:14px">
+      <div class="section-label">Priority queue</div>
+      ${businesses.map((b,i)=>`
+      <div class="priority-row ${i===0?'selected':''}" onclick="selectBiz(${i})" id="biz-row-${i}">
+        <div class="score-circle" style="background:${b.score>=85?'#E1F5EE':b.score>=75?'#FAEEDA':'#f0f0ee'};color:${b.score>=85?'#0F6E56':b.score>=75?'#854F0B':'#666'}">${b.score}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:500">${b.name}</div>
+          <div style="font-size:11px;color:#888">${b.biz}</div>
+        </div>
+        ${b.tier==="white-glove"?`<span class="white-glove">★ White glove</span>`:b.tier==="priority"?`<span style="background:#FAEEDA;color:#854F0B;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:500">Priority</span>`:`<span style="background:#f0f0ee;color:#666;border-radius:6px;padding:3px 8px;font-size:11px">Standard</span>`}
+      </div>`).join("")}
+    </div>
+
+    <div id="biz-detail" style="background:#fff;border-radius:14px;border:1px solid #e8e8e6;padding:14px">
+      ${bizDetail(businesses[0])}
+    </div>
+  </div>
+</div>`;
+
+function bizDetail(b){
+  const statusColors={strong:{bg:"#E1F5EE",tc:"#085041",label:"Strong fit"},good:{bg:"#E6F1FB",tc:"#042C53",label:"Good fit"},partial:{bg:"#FAEEDA",tc:"#412402",label:"Partial fit"}};
+  return`
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+    <div class="score-circle" style="background:#E1F5EE;color:#0F6E56;width:50px;height:50px;font-size:18px">${b.score}</div>
+    <div>
+      <div style="font-size:15px;font-weight:500">${b.name}</div>
+      <div style="font-size:12px;color:#888">${b.biz}</div>
+    </div>
+    ${b.tier==="white-glove"?`<span class="white-glove" style="margin-left:auto">★ White glove</span>`:`<span style="margin-left:auto;background:#FAEEDA;color:#854F0B;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:500">Priority</span>`}
+  </div>
+
+  <div class="section-label">Programs by eligibility & impact</div>
+  ${b.programs.map(p=>{
+    const sc=statusColors[p.status]||statusColors.good;
+    return`<div style="background:#f8f9fa;border-radius:10px;padding:12px;margin-bottom:8px;border:1px solid #e8e8e6">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <span style="font-size:13px;font-weight:500;flex:1">${p.name}</span>
+        <span style="background:${sc.bg};color:${sc.tc};font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px">${sc.label}</span>
+      </div>
+      <div class="impact-grid">
+        ${Object.entries(p.impact).map(([k,v])=>`
+        <div class="impact-item">
+          <div class="impact-label">${k.charAt(0).toUpperCase()+k.slice(1)}</div>
+          <div class="impact-val" style="color:${impactColor[v]}">${v}</div>
+        </div>`).join("")}
+      </div>
+    </div>`}).join("")}
+  <div style="margin-top:12px;display:flex;gap:8px">
+    <button class="btn-primary" style="flex:1;font-size:12px">Schedule engagement</button>
+    <button class="btn-ghost" style="font-size:12px">View full profile</button>
+  </div>`;}
 }
-function next() { if(cur<total-1){cur++;render();} }
-function prev() { if(cur>0){cur--;render();} }
-function goTo(i) { cur=i; render(); }
+
+// ── HELPERS ───────────────────────────────────────────────────────
+let selectedBiz=0;
+function toggleProg(id){
+  const el=document.getElementById(id);
+  const arr=document.getElementById("arr-"+id);
+  if(el){el.classList.toggle("open");if(arr)arr.textContent=el.classList.contains("open")?"▲":"▼";}
+}
+
+function selectBiz(i){
+  const businesses=[
+    {name:"Maria Rodriguez",biz:"Catering · Worcester",score:88,tier:"white-glove",programs:[
+      {name:"MassDevelopment Loan",status:"strong",impact:{jobs:"High",region:"High",diversity:"High",sector:"Medium",sustainability:"Low"}},
+      {name:"MWBE Certification",status:"strong",impact:{jobs:"Medium",region:"High",diversity:"High",sector:"Medium",sustainability:"Low"}},
+      {name:"Workforce Training Fund",status:"good",impact:{jobs:"High",region:"Medium",diversity:"High",sector:"Low",sustainability:"Low"}},
+      {name:"EDIP",status:"partial",impact:{jobs:"Low",region:"Medium",diversity:"High",sector:"Low",sustainability:"Low"}},
+    ]},
+    {name:"James Chen",biz:"AI startup · Boston",score:82,tier:"priority",programs:[
+      {name:"MassTech AI Program",status:"strong",impact:{jobs:"High",region:"Medium",diversity:"Medium",sector:"High",sustainability:"Medium"}},
+      {name:"MLSC Tax Incentive",status:"good",impact:{jobs:"High",region:"Low",diversity:"Medium",sector:"High",sustainability:"Low"}},
+    ]},
+    {name:"GreenBuild Co.",biz:"Construction · Springfield",score:76,tier:"standard",programs:[
+      {name:"MassCEC Clean Energy",status:"strong",impact:{jobs:"Medium",region:"High",diversity:"Low",sector:"High",sustainability:"High"}},
+      {name:"MassDevelopment Loan",status:"good",impact:{jobs:"Medium",region:"High",diversity:"Low",sector:"Medium",sustainability:"High"}},
+    ]},
+    {name:"Sarah Patel",biz:"Retail · Cambridge",score:61,tier:"standard",programs:[
+      {name:"SBDC Counseling",status:"good",impact:{jobs:"Low",region:"Low",diversity:"High",sector:"Low",sustainability:"Low"}},
+    ]}
+  ];
+  document.querySelectorAll(".priority-row").forEach((r,j)=>r.classList.toggle("selected",j===i));
+  const det=document.getElementById("biz-detail");
+  if(det){
+    const b=businesses[i];
+    const statusColors={strong:{bg:"#E1F5EE",tc:"#085041",label:"Strong fit"},good:{bg:"#E6F1FB",tc:"#042C53",label:"Good fit"},partial:{bg:"#FAEEDA",tc:"#412402",label:"Partial fit"}};
+    const impCol={High:"#1D9E75",Medium:"#EF9F27",Low:"#aaa"};
+    det.innerHTML=`
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+      <div class="score-circle" style="background:#E1F5EE;color:#0F6E56;width:50px;height:50px;font-size:18px">${b.score}</div>
+      <div><div style="font-size:15px;font-weight:500">${b.name}</div><div style="font-size:12px;color:#888">${b.biz}</div></div>
+      ${b.tier==="white-glove"?`<span class="white-glove" style="margin-left:auto">★ White glove</span>`:`<span style="margin-left:auto;background:#FAEEDA;color:#854F0B;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:500">Priority</span>`}
+    </div>
+    <div class="section-label">Programs by eligibility & impact</div>
+    ${b.programs.map(p=>{const sc=statusColors[p.status]||statusColors.good;return`
+    <div style="background:#f8f9fa;border-radius:10px;padding:12px;margin-bottom:8px;border:1px solid #e8e8e6">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <span style="font-size:13px;font-weight:500;flex:1">${p.name}</span>
+        <span style="background:${sc.bg};color:${sc.tc};font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px">${sc.label}</span>
+      </div>
+      <div class="impact-grid">${Object.entries(p.impact).map(([k,v])=>`
+        <div class="impact-item"><div class="impact-label">${k.charAt(0).toUpperCase()+k.slice(1)}</div><div class="impact-val" style="color:${impCol[v]}">${v}</div></div>`).join("")}
+      </div>
+    </div>`}).join("")}
+    <div style="margin-top:12px;display:flex;gap:8px">
+      <button class="btn-primary" style="flex:1;font-size:12px">Schedule engagement</button>
+      <button class="btn-ghost" style="font-size:12px">View full profile</button>
+    </div>`;
+  }
+}
+
+const stages=[s0,s1,s2,s3,s4];
+function render(){
+  document.getElementById("stage").innerHTML=stages[cur]();
+  document.querySelectorAll(".step-btn").forEach((b,i)=>{
+    b.classList.toggle("active",i===cur);
+    b.classList.toggle("done",i<cur);
+  });
+  document.getElementById("prev-btn").style.display=cur>0?"block":"none";
+  const nb=document.getElementById("next-btn");
+  if(cur===total-1){nb.textContent="↺ Restart";nb.onclick=()=>{cur=0;render()};}
+  else{nb.textContent="Next →";nb.onclick=next;}
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function next(){if(cur<total-1){cur++;render();}}
+function prev(){if(cur>0){cur--;render();}}
+function goTo(i){cur=i;render();}
 render();
 </script>
 </body>
