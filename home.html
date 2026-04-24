@@ -8,86 +8,64 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f2f5;color:#1a1a1a;min-height:100vh}
 
-/* Nav */
 .nav{background:#0a2540;padding:14px 2rem;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
 .nav-logo{width:36px;height:36px;border-radius:9px;background:#1D9E75;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .nav-title{font-size:16px;font-weight:500;color:#fff}
 .nav-sub{font-size:11px;color:#5DCAA5}
-.nav-beta{background:#5DCAA5;color:#0a2540;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:0.5px}
+.nav-beta{background:#5DCAA5;color:#0a2540;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:0.5px;margin-left:6px}
 .nav-cta{margin-left:auto;background:#1D9E75;border:none;border-radius:8px;padding:8px 16px;color:#fff;font-size:12px;font-weight:500;cursor:pointer;text-decoration:none;white-space:nowrap}
 
-/* Hero */
 .hero{background:#0a2540;padding:5rem 2rem 4rem;text-align:center}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(93,202,165,0.15);border:1px solid rgba(93,202,165,0.3);border-radius:20px;padding:6px 14px;font-size:12px;color:#5DCAA5;font-weight:500;margin-bottom:1.5rem}
-.hero-title{font-size:42px;font-weight:500;color:#fff;line-height:1.2;margin-bottom:1rem;max-width:600px;margin-left:auto;margin-right:auto}
+.hero-title{font-size:40px;font-weight:500;color:#fff;line-height:1.2;margin-bottom:1rem;max-width:580px;margin-left:auto;margin-right:auto}
 .hero-title span{color:#5DCAA5}
-.hero-sub{font-size:16px;color:#8aa0b8;max-width:480px;margin:0 auto 2.5rem;line-height:1.7}
+.hero-sub{font-size:16px;color:#8aa0b8;max-width:460px;margin:0 auto 2.5rem;line-height:1.7}
 .hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:3rem}
-.btn-primary{display:inline-flex;align-items:center;gap:8px;background:#1D9E75;color:#fff;padding:13px 24px;border-radius:12px;font-size:14px;font-weight:500;text-decoration:none;border:none;cursor:pointer;transition:background 0.2s}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:#1D9E75;color:#fff;padding:13px 24px;border-radius:12px;font-size:14px;font-weight:500;text-decoration:none;transition:background 0.2s}
 .btn-primary:hover{background:#0F6E56}
 .btn-ghost{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);color:#fff;padding:13px 24px;border-radius:12px;font-size:14px;font-weight:500;text-decoration:none;border:1px solid rgba(255,255,255,0.15);transition:background 0.2s}
 .btn-ghost:hover{background:rgba(255,255,255,0.14)}
-.hero-stats{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap}
-.hero-stat{text-align:center}
+.hero-stats{display:flex;justify-content:center;gap:2.5rem;flex-wrap:wrap}
 .hero-stat-val{font-size:24px;font-weight:500;color:#5DCAA5}
 .hero-stat-lbl{font-size:12px;color:#8aa0b8;margin-top:3px}
 
-/* What we built */
-.section{padding:4rem 2rem;max-width:900px;margin:0 auto}
+.section{padding:4rem 2rem;max-width:860px;margin:0 auto}
 .section-eyebrow{font-size:11px;font-weight:600;color:#1D9E75;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;text-align:center}
-.section-title{font-size:28px;font-weight:500;text-align:center;margin-bottom:8px}
-.section-sub{font-size:15px;color:#666;text-align:center;max-width:480px;margin:0 auto 2.5rem;line-height:1.6}
+.section-title{font-size:26px;font-weight:500;text-align:center;margin-bottom:8px}
+.section-sub{font-size:14px;color:#666;text-align:center;max-width:440px;margin:0 auto 2.5rem;line-height:1.6}
 
-/* Cards */
-.cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:0}
+.cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
 .card{background:#fff;border-radius:16px;border:1px solid #e8e8e6;overflow:hidden;display:flex;flex-direction:column;transition:transform 0.2s,box-shadow 0.2s}
 .card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.08)}
-.card-top{padding:1.25rem;flex:1}
-.card-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;font-size:20px}
-.card-num{font-size:11px;font-weight:600;color:#aaa;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px}
-.card-title{font-size:16px;font-weight:500;margin-bottom:6px}
-.card-desc{font-size:13px;color:#666;line-height:1.6}
-.card-footer{padding:12px 14px;border-top:1px solid #e8e8e6;background:#fafaf9}
+.card-top{padding:1.5rem;flex:1}
+.card-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;font-size:22px}
+.card-num{font-size:11px;font-weight:600;color:#aaa;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px}
+.card-title{font-size:16px;font-weight:500;margin-bottom:8px}
+.card-desc{font-size:13px;color:#666;line-height:1.7}
+.card-footer{padding:12px 16px;border-top:1px solid #e8e8e6;background:#fafaf9}
 .card-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;text-decoration:none;color:#1D9E75}
 .card-link:hover{color:#0F6E56}
-.card-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600;margin-left:8px;vertical-align:middle}
+.card-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;margin-left:6px;vertical-align:middle}
 
-/* How it works */
-.how-section{background:#fff;padding:4rem 2rem}
+.how-section{background:#fff;padding:4rem 2rem;border-top:1px solid #e8e8e6}
 .how-inner{max-width:860px;margin:0 auto}
-.steps{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;margin-top:2.5rem;position:relative}
-.steps::before{content:'';position:absolute;top:22px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,#1D9E75,#378ADD,#7F77DD);opacity:0.3}
-.step{text-align:center;position:relative}
-.step-circle{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;margin:0 auto 12px;position:relative;z-index:1}
+.steps{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;margin-top:2.5rem}
+.step{text-align:center}
+.step-circle{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;margin:0 auto 12px}
 .step-title{font-size:13px;font-weight:500;margin-bottom:4px}
 .step-desc{font-size:11px;color:#888;line-height:1.5}
 
-/* Impact */
-.impact-section{background:#f8f9fa;padding:4rem 2rem;border-top:1px solid #e8e8e6;border-bottom:1px solid #e8e8e6}
-.impact-inner{max-width:860px;margin:0 auto}
-.impact-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:2.5rem}
-.impact-card{background:#fff;border-radius:14px;padding:1.25rem;border:1px solid #e8e8e6}
-.impact-icon{font-size:24px;margin-bottom:8px}
-.impact-title{font-size:14px;font-weight:500;margin-bottom:6px}
-.impact-desc{font-size:13px;color:#666;line-height:1.6}
+.cta-section{background:#0a2540;padding:4rem 2rem}
+.cta-inner{max-width:640px;margin:0 auto;text-align:center}
+.cta-title{font-size:26px;font-weight:500;color:#fff;margin-bottom:8px}
+.cta-sub{font-size:15px;color:#8aa0b8;margin-bottom:2rem;line-height:1.6}
+.cta-steps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:2rem;text-align:left}
+.cta-step{background:rgba(255,255,255,0.07);border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.1)}
+.cta-num{width:22px;height:22px;border-radius:6px;background:#1D9E75;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:#fff;margin-bottom:8px}
+.cta-step-title{font-size:12px;font-weight:500;color:#fff;margin-bottom:3px}
+.cta-step-desc{font-size:11px;color:#8aa0b8;line-height:1.5}
 
-/* Next steps */
-.next-section{background:#0a2540;padding:4rem 2rem}
-.next-inner{max-width:760px;margin:0 auto;text-align:center}
-.next-title{font-size:28px;font-weight:500;color:#fff;margin-bottom:8px}
-.next-sub{font-size:15px;color:#8aa0b8;margin-bottom:2.5rem;line-height:1.6}
-.next-steps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:2.5rem;text-align:left}
-.next-step{background:rgba(255,255,255,0.07);border-radius:12px;padding:16px;border:1px solid rgba(255,255,255,0.1)}
-.next-step-num{width:24px;height:24px;border-radius:8px;background:#1D9E75;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:#fff;margin-bottom:8px}
-.next-step-title{font-size:13px;font-weight:500;color:#fff;margin-bottom:4px}
-.next-step-desc{font-size:11px;color:#8aa0b8;line-height:1.5}
-.next-contact{background:rgba(29,158,117,0.15);border:1px solid rgba(29,158,117,0.3);border-radius:12px;padding:1.25rem;margin-bottom:1.5rem}
-.next-contact-label{font-size:11px;font-weight:600;color:#5DCAA5;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px}
-.next-contact-name{font-size:16px;font-weight:500;color:#fff;margin-bottom:2px}
-.next-contact-desc{font-size:13px;color:#8aa0b8}
-
-/* Footer */
-.footer{background:#06192e;padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer{background:#06192e;padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .footer-left{font-size:12px;color:#4a6480}
 .footer-right{display:flex;gap:16px}
 .footer-link{font-size:12px;color:#4a6480;text-decoration:none}
@@ -97,35 +75,31 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .fade{animation:fadeUp 0.5s ease both}
 
 @media(max-width:640px){
-  .hero-title{font-size:28px}
+  .hero-title{font-size:26px}
   .cards{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr 1fr}
-  .steps::before{display:none}
-  .impact-grid{grid-template-columns:1fr}
-  .next-steps{grid-template-columns:1fr}
+  .cta-steps{grid-template-columns:1fr}
   .hero-stats{gap:1.5rem}
 }
 </style>
 </head>
 <body>
 
-<!-- Nav -->
 <nav class="nav">
   <div class="nav-logo">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
   </div>
   <div>
-    <div class="nav-title">MassConnect <span class="nav-beta">BETA</span></div>
+    <div class="nav-title">MassConnect<span class="nav-beta">BETA</span></div>
     <div class="nav-sub">Massachusetts Business Front Door</div>
   </div>
   <a class="nav-cta" href="https://claude.ai/artifacts/latest/b705cdf2-90d5-4250-beb5-175cd05fec86" target="_blank">Try the AI beta →</a>
 </nav>
 
-<!-- Hero -->
 <div class="hero">
   <div class="hero-eyebrow fade">
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-    Built for EOED · Concept submission
+    EOED Business Front Door Initiative · Concept submission
   </div>
   <h1 class="hero-title fade">The smarter front door for <span>Massachusetts businesses</span></h1>
   <p class="hero-sub fade">An AI-guided intake agent that connects any business to the right state programs in 5 minutes — with no extra staff required.</p>
@@ -143,15 +117,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="hero-stat"><div class="hero-stat-val">756K</div><div class="hero-stat-lbl">Small businesses in MA</div></div>
     <div class="hero-stat"><div class="hero-stat-val">$250M</div><div class="hero-stat-lbl">Annual program funding</div></div>
     <div class="hero-stat"><div class="hero-stat-val">4,000+</div><div class="hero-stat-lbl">Annual inquiries</div></div>
-    <div class="hero-stat"><div class="hero-stat-val">50+</div><div class="hero-stat-lbl">Programs across 13 agencies</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">50+</div><div class="hero-stat-lbl">Programs · 13 agencies</div></div>
   </div>
 </div>
 
-<!-- What we built -->
 <div class="section">
-  <div class="section-eyebrow">What we built</div>
-  <div class="section-title">Three tools. One submission.</div>
-  <div class="section-sub">Everything you need to evaluate, experience, and advance the MassConnect concept.</div>
+  <div class="section-eyebrow">What's included</div>
+  <div class="section-title">Three ways to explore MassConnect</div>
+  <div class="section-sub">Start with the AI beta to experience it firsthand, then review the pitch for the full strategic case.</div>
   <div class="cards">
 
     <div class="card">
@@ -159,7 +132,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <div class="card-icon" style="background:#E1F5EE">📋</div>
         <div class="card-num">01</div>
         <div class="card-title">Visual pitch</div>
-        <div class="card-desc">The full MassConnect concept — problem, solution, why it wins, real impact data, and three concrete next steps. Built for stakeholder sharing.</div>
+        <div class="card-desc">The full strategic case — problem, solution, why it wins, real impact data from SBA and MassINC, and three concrete next steps for EOED.</div>
       </div>
       <div class="card-footer">
         <a class="card-link" href="pitch.html" target="_blank">
@@ -174,7 +147,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <div class="card-icon" style="background:#E6F1FB">🖥️</div>
         <div class="card-num">02</div>
         <div class="card-title">Interactive demo</div>
-        <div class="card-desc">A clickable prototype showing the full business owner and staff experience — from intake conversation through scorecard, application prep, and navigator view.</div>
+        <div class="card-desc">A clickable prototype walking through the full experience — intake conversation, scorecard, application prep, and the staff navigator view.</div>
       </div>
       <div class="card-footer">
         <a class="card-link" href="index.html" target="_blank">
@@ -189,7 +162,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <div class="card-icon" style="background:#E1F5EE">✨</div>
         <div class="card-num">03 <span class="card-badge" style="background:#E1F5EE;color:#085041">BETA</span></div>
         <div class="card-title">Live AI beta</div>
-        <div class="card-desc">A fully functional AI intake agent. Have a real conversation, receive a live scorecard with program matches and eligibility criteria, generate an application draft, and ask the built-in advisor anything.</div>
+        <div class="card-desc">A fully working AI intake agent. Real conversation, live program matching, eligibility criteria breakdown, application draft, and built-in advisor — right now.</div>
       </div>
       <div class="card-footer" style="background:#E1F5EE;border-top-color:#c8ead8">
         <a class="card-link" href="https://claude.ai/artifacts/latest/b705cdf2-90d5-4250-beb5-175cd05fec86" target="_blank" style="color:#0F6E56">
@@ -202,7 +175,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<!-- How it works -->
 <div class="how-section">
   <div class="how-inner">
     <div class="section-eyebrow">How it works</div>
@@ -211,85 +183,48 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <div class="step">
         <div class="step-circle" style="background:#E1F5EE;color:#0F6E56">1</div>
         <div class="step-title">AI conversation</div>
-        <div class="step-desc">Business owner answers plain-language questions — no forms, no jargon</div>
+        <div class="step-desc">Plain-language questions — no forms, no jargon, no prior knowledge needed</div>
       </div>
       <div class="step">
         <div class="step-circle" style="background:#EEEDFE;color:#26215C">2</div>
         <div class="step-title">Live scorecard</div>
-        <div class="step-desc">Eligibility assessed across 50+ programs with criteria breakdown and tips</div>
+        <div class="step-desc">Eligibility assessed across 50+ programs with full criteria breakdown</div>
       </div>
       <div class="step">
         <div class="step-circle" style="background:#E6F1FB;color:#042C53">3</div>
         <div class="step-title">Application prep</div>
-        <div class="step-desc">AI pre-populates the application using information from the conversation</div>
+        <div class="step-desc">AI pre-populates the application using the conversation</div>
       </div>
       <div class="step">
         <div class="step-circle" style="background:#FAEEDA;color:#412402">4</div>
         <div class="step-title">Staff pipeline</div>
-        <div class="step-desc">Navigator receives a prioritized, pre-populated summary ready to act on</div>
+        <div class="step-desc">Navigator gets a prioritized, pre-populated summary ready to act on</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Impact -->
-<div class="impact-section">
-  <div class="impact-inner">
-    <div class="section-eyebrow">Why this matters</div>
-    <div class="section-title">Built around real Massachusetts data</div>
-    <div class="section-sub">Every design decision is grounded in what the data says about who needs help and why they aren't getting it.</div>
-    <div class="impact-grid">
-      <div class="impact-card">
-        <div class="impact-icon">🏪</div>
-        <div class="impact-title">Most businesses never find what they qualify for</div>
-        <div class="impact-desc">The top reason businesses don't access state programs is not knowing they exist. MassConnect solves this by proactively surfacing relevant programs based on a business's actual profile.</div>
-      </div>
-      <div class="impact-card">
-        <div class="impact-icon">⚖️</div>
-        <div class="impact-title">Access is determined by who you know</div>
-        <div class="impact-desc">68% of Black and 70% of Latino business owners cite capital access as a top priority — yet these businesses are least likely to know about available programs. MassConnect levels that playing field.</div>
-      </div>
-      <div class="impact-card">
-        <div class="impact-icon">👥</div>
-        <div class="impact-title">Staff time goes to intake, not impact</div>
-        <div class="impact-desc">With 4,000+ annual inquiries and limited navigators, most staff time is spent on manual triage. MassConnect handles intake automatically so human attention goes to the 500 businesses that need it most.</div>
-      </div>
-      <div class="impact-card">
-        <div class="impact-icon">🤖</div>
-        <div class="impact-title">60% of MA businesses see AI as an opportunity</div>
-        <div class="impact-desc">The businesses most underserved by the current system — Black, Latino, and AAPI entrepreneurs — are also the most open to AI-powered tools. The timing is right.</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Next steps -->
-<div class="next-section">
-  <div class="next-inner">
+<div class="cta-section">
+  <div class="cta-inner">
     <div class="section-eyebrow" style="color:#5DCAA5">What happens next</div>
-    <h2 class="next-title">Three steps to advance MassConnect</h2>
-    <p class="next-sub">This submission is a working concept — not a proposal. The AI beta is live and ready to use today. Here is the path from concept to pilot.</p>
-    <div class="next-steps">
-      <div class="next-step">
-        <div class="next-step-num">1</div>
-        <div class="next-step-title">30-minute scoping call</div>
-        <div class="next-step-desc">Align on pilot scope, success metrics, and which agency to start with. MassDevelopment is the recommended first partner.</div>
+    <div class="cta-title">Three steps to advance this</div>
+    <div class="cta-sub">The AI beta is live and working today. Here is the path from concept to pilot.</div>
+    <div class="cta-steps">
+      <div class="cta-step">
+        <div class="cta-num">1</div>
+        <div class="cta-step-title">30-min scoping call</div>
+        <div class="cta-step-desc">Define pilot scope and align on success metrics with one agency</div>
       </div>
-      <div class="next-step">
-        <div class="next-step-num">2</div>
-        <div class="next-step-title">90-day pilot</div>
-        <div class="next-step-desc">Deploy with one agency. Validate matching accuracy, staff adoption, and business outcomes before scaling.</div>
+      <div class="cta-step">
+        <div class="cta-num">2</div>
+        <div class="cta-step-title">90-day pilot</div>
+        <div class="cta-step-desc">Validate matching accuracy and staff adoption before scaling</div>
       </div>
-      <div class="next-step">
-        <div class="next-step-num">3</div>
-        <div class="next-step-title">Scale statewide</div>
-        <div class="next-step-desc">Expand across all 13 agencies with a proven model. No legacy system overhauls. No additional headcount.</div>
+      <div class="cta-step">
+        <div class="cta-num">3</div>
+        <div class="cta-step-title">Scale statewide</div>
+        <div class="cta-step-desc">Expand across all 13 agencies with a proven model</div>
       </div>
-    </div>
-    <div class="next-contact">
-      <div class="next-contact-label">Submitted to</div>
-      <div class="next-contact-name">Secretary Eric Paley · Massachusetts EOED</div>
-      <div class="next-contact-desc">Executive Office of Economic Development · Business Front Door Initiative</div>
     </div>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
       <a class="btn-primary" href="https://claude.ai/artifacts/latest/b705cdf2-90d5-4250-beb5-175cd05fec86" target="_blank">Try the live AI beta →</a>
@@ -298,9 +233,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<!-- Footer -->
 <footer class="footer">
-  <div class="footer-left">MassConnect · Massachusetts Business Front Door · Concept submission 2025</div>
+  <div class="footer-left">MassConnect · Massachusetts Business Front Door · 2025</div>
   <div class="footer-right">
     <a class="footer-link" href="pitch.html">Pitch</a>
     <a class="footer-link" href="index.html">Demo</a>
