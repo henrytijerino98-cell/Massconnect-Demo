@@ -223,13 +223,141 @@ function renderScorecard(){
   return `<div class="fade"><div style="background:#fff;border-radius:14px;border:1px solid #e8e8e6;padding:16px;margin-bottom:12px"><div style="font-size:11px;color:#999;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Your business profile</div><div style="font-size:14px;font-weight:500;margin-bottom:4px">${bp.type||'Your business'} · ${bp.location||'Massachusetts'}</div><div style="font-size:12px;color:#888;margin-bottom:10px">${bp.years||0} years · ${bp.employees||0} employees · ${bp.revenue||'Not specified'}</div><div style="display:flex;flex-wrap:wrap;gap:4px">${(bp.tags||[]).map(t=>`<span class="tag" style="background:#E1F5EE;color:#085041">${t}</span>`).join('')}</div></div>${(scorecard.selfNominated||[]).length>0?`<div style="margin-bottom:16px"><div class="section-label">Programs you asked about</div>${(scorecard.selfNominated||[]).map(p=>progCard(p)).join('')}</div>`:''}<div style="margin-bottom:16px"><div class="section-label">Programs we recommend for you</div>${(scorecard.recommended||[]).map(p=>progCard(p)).join('')}</div><div style="background:#0a2540;border-radius:14px;padding:20px;text-align:center"><div style="font-size:15px;font-weight:500;color:#fff;margin-bottom:6px">Ready to apply?</div><div style="font-size:13px;color:#8aa0b8;margin-bottom:16px;line-height:1.6">Let AI help you prepare your application using everything from your conversation.</div><button class="btn-primary" onclick="goTo(3)">Prepare my application →</button></div></div>`;
 }
 
+let selectedProgram = null;
+let loanAmount = '';
+
+function getAllPrograms() {
+  if (!scorecard) return [];
+  return [...(scorecard.selfNominated||[]), ...(scorecard.recommended||[])].filter(p => p.status !== 'no');
+}
+
 function renderAppPrep(){
   if(!scorecard) return '<div style="padding:2rem;text-align:center;color:#888">Complete the conversation first.</div>';
-  const bp=scorecard.businessProfile||{};
-  const top=(scorecard.recommended||[])[0]||{};
-  const ss={complete:{bg:'#E1F5EE',tc:'#085041',ic:'✓',lbl:'Pre-filled'},review:{bg:'#FAEEDA',tc:'#412402',ic:'~',lbl:'Review'},missing:{bg:'#FAECE7',tc:'#712B13',ic:'!',lbl:'Required'}};
-  const fields=[{label:'Business name',value:bp.type||'',status:'complete'},{label:'Location',value:bp.location||'',status:'complete'},{label:'Years in operation',value:bp.years?`${bp.years} years`:'',status:'complete'},{label:'Number of employees',value:bp.employees?`${bp.employees} employees`:'',status:'complete'},{label:'Annual revenue',value:bp.revenue||'',status:bp.revenue?'complete':'review'},{label:'Loan amount requested',value:'To be determined',status:'review'},{label:'Purpose of funds',value:'Business expansion and equipment',status:'review'},{label:'Collateral available',value:'',status:'missing'},{label:'Business tax returns (2 years)',value:'',status:'missing'},{label:'Personal financial statement',value:'',status:'missing'}];
-  return `<div class="card fade"><div style="padding:12px 16px;background:#E1F5EE;border-bottom:1px solid #c8ead8;display:flex;align-items:center;gap:10px"><div style="width:28px;height:28px;border-radius:8px;background:#1D9E75;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><div style="font-size:13px;font-weight:500;color:#085041">Application prep — ${top.program||'Top matched program'}</div><div style="font-size:11px;color:#0F6E56">Pre-populated from your conversation</div></div></div><div style="padding:16px">${fields.map(f=>{const s=ss[f.status]||ss.missing;return`<div class="appfield"><div class="appfield-ic" style="background:${s.bg};color:${s.tc}">${s.ic}</div><div style="flex:1"><div style="font-size:11px;color:#888">${f.label}</div><div style="font-size:13px;font-weight:500;color:${f.status==='missing'?'#aaa':'#1a1a1a'}">${f.value||'Not yet provided'}</div></div><span style="background:${s.bg};color:${s.tc};font-size:10px;font-weight:500;padding:2px 8px;border-radius:10px">${s.lbl}</span></div>`;}).join('')}<div style="margin-top:16px;background:#EEF6FF;border-radius:10px;padding:12px;border:1px solid #bbd4f5"><div style="font-size:12px;font-weight:500;color:#1a4fa0;margin-bottom:4px">💡 Navigator guidance</div><div style="font-size:12px;color:#1a4fa0;line-height:1.6">Gather your last 2 years of business tax returns and a list of business assets. Your navigator will review collateral value in your first meeting. Use the advisor button to get help writing any section of your application.</div></div></div></div>`;
+  const allProgs = getAllPrograms();
+  if (!selectedProgram && allProgs.length > 0) selectedProgram = allProgs[0].program;
+  const prog = allProgs.find(p => p.program === selectedProgram) || allProgs[0] || {};
+  const bp = scorecard.businessProfile||{};
+  const ss = {complete:{bg:'#E1F5EE',tc:'#085041',ic:'✓',lbl:'Pre-filled'},review:{bg:'#FAEEDA',tc:'#412402',ic:'~',lbl:'Review'},missing:{bg:'#FAECE7',tc:'#712B13',ic:'!',lbl:'Required'}};
+  const SC2 = {strong:{bg:'#E1F5EE',tc:'#085041',label:'Strong fit'},good:{bg:'#E6F1FB',tc:'#042C53',label:'Good fit'},partial:{bg:'#FAEEDA',tc:'#412402',label:'Partial fit'}};
+
+  // Build fields based on selected program
+  const isMWBE = selectedProgram?.includes('MWBE');
+  const isWorkforce = selectedProgram?.includes('Workforce');
+  const isSBDC = selectedProgram?.includes('SBDC');
+  const isLoan = selectedProgram?.includes('MassDevelopment') || selectedProgram?.includes('Loan');
+  const isEDIP = selectedProgram?.includes('EDIP');
+  const isMassCEC = selectedProgram?.includes('MassCEC') || selectedProgram?.includes('Clean Energy');
+
+  let fields = [
+    {label:'Business name', value:bp.type||'', status:'complete'},
+    {label:'Business location', value:bp.location||'', status:'complete'},
+    {label:'Years in operation', value:bp.years?`${bp.years} years`:'', status:'complete'},
+    {label:'Number of employees', value:bp.employees?`${bp.employees} employees`:'', status:'complete'},
+    {label:'Annual revenue', value:bp.revenue||'', status:bp.revenue?'complete':'review'},
+  ];
+
+  if (isLoan) {
+    fields.push({label:'Loan amount requested', value:loanAmount||'', status:loanAmount?'complete':'review'});
+    fields.push({label:'Purpose of funds', value:'Business expansion and equipment', status:'review'});
+    fields.push({label:'Collateral available', value:'', status:'missing'});
+    fields.push({label:'Business tax returns (2 years)', value:'', status:'missing'});
+    fields.push({label:'Personal financial statement', value:'', status:'missing'});
+  }
+  if (isMWBE) {
+    fields.push({label:'Ownership demographic', value:(bp.tags||[]).filter(t=>t.includes('owned')).join(', ')||'', status:'complete'});
+    fields.push({label:'Owner day-to-day control documentation', value:'', status:'missing'});
+    fields.push({label:'Business registration certificate', value:'', status:'missing'});
+    fields.push({label:'Org chart showing ownership structure', value:'', status:'missing'});
+  }
+  if (isWorkforce) {
+    fields.push({label:'Number of employees to train', value:bp.employees?`Up to ${bp.employees} employees`:'', status:'review'});
+    fields.push({label:'Training provider', value:'', status:'missing'});
+    fields.push({label:'Training plan description', value:'', status:'missing'});
+    fields.push({label:'UI account number', value:'', status:'missing'});
+  }
+  if (isSBDC) {
+    fields.push({label:'Primary business challenge', value:'Growth and expansion planning', status:'review'});
+    fields.push({label:'Preferred SBDC location', value:bp.location||'', status:'review'});
+  }
+  if (isEDIP) {
+    fields.push({label:'Planned capital investment', value:loanAmount||'', status:loanAmount?'complete':'missing'});
+    fields.push({label:'Net new jobs projected', value:'', status:'missing'});
+    fields.push({label:'Municipal sponsor', value:'', status:'missing'});
+    fields.push({label:'Investment timeline', value:'', status:'missing'});
+  }
+  if (isMassCEC) {
+    fields.push({label:'Clean energy technology type', value:'', status:'missing'});
+    fields.push({label:'Current energy usage/costs', value:'', status:'missing'});
+    fields.push({label:'Project description', value:'', status:'missing'});
+  }
+
+  return `<div class="fade">
+  <div style="background:#fff;border-radius:14px;border:1px solid #e8e8e6;padding:14px;margin-bottom:12px">
+    <div style="font-size:11px;color:#999;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px">Select a program to apply for</div>
+    <div style="display:grid;gap:8px">
+      ${allProgs.map(p => {
+        const c = SC2[p.status]||SC2.good;
+        const sel = p.program === selectedProgram;
+        return `<div onclick="selectProgram('${p.program.replace(/'/g,"\\'")}')" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:2px solid ${sel?'#1D9E75':'#e8e8e6'};background:${sel?'#E1F5EE':'#fff'};cursor:pointer;transition:all 0.15s">
+          <div style="width:18px;height:18px;border-radius:50%;border:2px solid ${sel?'#1D9E75':'#ddd'};background:${sel?'#1D9E75':'#fff'};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            ${sel?'<svg width="8" height="8" viewBox="0 0 10 10"><polyline points="1 5 4 8 9 2" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>':''}
+          </div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:${sel?'500':'400'};color:${sel?'#085041':'#1a1a1a'}">${p.program}</div></div>
+          <span style="background:${c.bg};color:${c.tc};font-size:10px;font-weight:500;padding:2px 8px;border-radius:10px">${c.label}</span>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="padding:12px 16px;background:#E1F5EE;border-bottom:1px solid #c8ead8;display:flex;align-items:center;gap:10px">
+      <div style="width:28px;height:28px;border-radius:8px;background:#1D9E75;display:flex;align-items:center;justify-content:center">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:500;color:#085041">Application prep — ${selectedProgram||'Select a program above'}</div>
+        <div style="font-size:11px;color:#0F6E56">Pre-populated from your conversation</div>
+      </div>
+    </div>
+    <div style="padding:16px">
+      ${isLoan && !loanAmount ? `<div style="background:#FFF8E6;border:1px solid #EF9F27;border-radius:10px;padding:12px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:18px">💰</span>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:500;color:#412402;margin-bottom:6px">How much are you looking to borrow?</div>
+          <div style="display:flex;gap:8px">
+            <input id="loan-input" placeholder="e.g. $75,000" style="flex:1;border:1px solid #EF9F27;border-radius:8px;padding:7px 10px;font-size:13px;outline:none">
+            <button onclick="saveLoanAmount()" style="padding:7px 14px;background:#EF9F27;border:none;border-radius:8px;color:#fff;font-size:12px;cursor:pointer;font-weight:500">Save</button>
+          </div>
+        </div>
+      </div>` : ''}
+      ${fields.map(f=>{const s=ss[f.status]||ss.missing;return`<div class="appfield"><div class="appfield-ic" style="background:${s.bg};color:${s.tc}">${s.ic}</div><div style="flex:1"><div style="font-size:11px;color:#888">${f.label}</div><div style="font-size:13px;font-weight:500;color:${f.status==='missing'?'#aaa':'#1a1a1a'}">${f.value||'Not yet provided'}</div></div><span style="background:${s.bg};color:${s.tc};font-size:10px;font-weight:500;padding:2px 8px;border-radius:10px">${s.lbl}</span></div>`;}).join('')}
+      <div style="margin-top:16px;background:#EEF6FF;border-radius:10px;padding:12px;border:1px solid #bbd4f5">
+        <div style="font-size:12px;font-weight:500;color:#1a4fa0;margin-bottom:4px">💡 Navigator guidance</div>
+        <div style="font-size:12px;color:#1a4fa0;line-height:1.6">${
+          isLoan ? 'Gather your last 2 years of business tax returns and a list of business assets. Your navigator will review collateral value in your first meeting.' :
+          isMWBE ? 'MWBE certification takes 60-90 days. Start this process in parallel with any loan applications to maximize your state contracting opportunities.' :
+          isWorkforce ? 'Contact WorkForce Central in your region to identify approved training providers before applying. Having a provider lined up speeds approval significantly.' :
+          isSBDC ? 'SBDC counseling is completely free and available immediately. Your local center can also help you prepare applications for other programs.' :
+          isEDIP ? 'Contact your municipal economic development office first to discuss sponsorship — this is required and can take several weeks to arrange.' :
+          'Use the advisor button to get help writing any section of your application.'
+        }</div>
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+function selectProgram(name) {
+  selectedProgram = name;
+  render();
+}
+
+function saveLoanAmount() {
+  const inp = document.getElementById('loan-input');
+  if (inp && inp.value.trim()) {
+    loanAmount = inp.value.trim();
+    render();
+  }
 }
 
 function renderStaff(){
