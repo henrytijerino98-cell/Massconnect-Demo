@@ -85,7 +85,12 @@ const SONNET='claude-sonnet-4-20250514';
 
 const CONTEXT=`MASSCONNECT FULL CONTEXT
 
-WHAT: AI-powered business intake, matching, and prioritization system for Massachusetts EOED. 5-minute AI conversation, live eligibility scorecard, application prep, staff prioritized pipeline.
+WHAT WAS ACTUALLY BUILT (LIVE AT MASSCONNECT-DEMO.VERCEL.APP):
+- massconnect_app.html: Fully working AI intake agent with 5-tab experience. Tab 1 welcome screen. Tab 2 live AI conversation using Claude Haiku that gathers 7 data points and generates a scorecard. Tab 3 scorecard showing self-nominated programs and AI recommended programs with eligibility ratings (Strong/Good/Partial/Not a fit), expandable criteria breakdown with met/partial/not met indicators and actionable tips. Tab 4 application prep with pre-populated fields from the conversation. Tab 5 staff view with priority queue, impact scoring across 5 dimensions, and white glove flags. Built-in advisor panel accessible throughout via floating button.
+- massconnect_consultant.html: Synthetic consultant with 7 modes (Strategy, Diagnose, Product, API & Tech, Build & Procure, Pilot & Launch, Risk & Compliance). Pre-loaded with full project context. Outputs saved per session.
+- home.html: Landing page linking all assets.
+- Hosted on Vercel with secure API proxy so key is never exposed.
+- Built with plain HTML/CSS/JavaScript calling Claude API via Vercel serverless function. 5-minute AI conversation, live eligibility scorecard, application prep, staff prioritized pipeline.
 
 PROBLEM: $250M+ annually across 50+ programs, 13 agencies, 4,000+ annual inquiries, staff manually triage everything. 756K small businesses in MA. Most businesses never find what they qualify for. 68% of Black and 70% of Latino owners cite capital access as top priority but are least likely to know programs exist. Only 500 of 4,000 get 1:1 staff engagement.
 
@@ -118,12 +123,12 @@ OPEN QUESTIONS: Build vs buy. Which agencies after MassDevelopment. Knowledge ba
 COMPETITIVE: California GO-Biz single POC model. Arizona ACA 90 projects 2025 $34B+ investment. Portugal Gov.pt 2300+ services AI. GovGrants/SunoAI vendor AI for grants.`;
 
 const MODES=[
-  {id:'diagnose',label:'Diagnose',icon:'🔎',color:'#0a2540',desc:'Surface the most critical unresolved issues right now',starters:['What are the 3 biggest risks right now?','What decisions need to be made in 30 days?','What is EOED most likely to push back on?','What could derail this if left unresolved?'],auto:'Based on the full MassConnect project context, what are the three most important unresolved issues that need to be addressed before this can move forward? Be specific, direct, and flag what could derail this.'},
   {id:'strategy',label:'Strategy',icon:'🎯',color:'#1D9E75',desc:'Policy alignment, competitive positioning, stakeholder politics',starters:['How does MassConnect fit the Healey-Driscoll agenda?','How do we get buy-in from all 13 agencies?','What is the political risk of AI in government?','How does MA compare to California GO-Biz?'],auto:null},
+  {id:'diagnose',label:'Diagnose',icon:'🔎',color:'#0a2540',desc:'Surface the most critical unresolved issues right now',starters:['What are the 3 biggest risks right now?','What decisions need to be made in 30 days?','What is EOED most likely to push back on?','What could derail this if left unresolved?'],auto:'Based on the full MassConnect project context, what are the three most important unresolved issues that need to be addressed before this can move forward? Be specific, direct, and flag what could derail this.'},
   {id:'product',label:'Product',icon:'🔧',color:'#378ADD',desc:'Feature design, UX decisions, product gaps',starters:['What product features are still missing?','How do we handle non-English speaking users?','What happens when a business disputes eligibility?','Should we build a mobile app?'],auto:null},
   {id:'api',label:'API & Tech',icon:'🔌',color:'#7F77DD',desc:'APIs, tech stack, data architecture, integration',starters:['What APIs do we need to build this?','Should we use Claude or OpenAI?','What does the Phase 1 data architecture look like?','How do we connect data across 13 agencies?'],auto:null},
   {id:'build',label:'Build & Procure',icon:'🏗️',color:'#854F0B',desc:'Vendor options, procurement, build vs buy',starters:['Should we build custom or use a vendor?','What vendors should EOED evaluate?','How does MA government procurement work?','What state contracts can we use?'],auto:null},
-  {id:'pilot',label:'Pilot & Launch',icon:'🚀',color:'#0F6E56',desc:'Pilot design, timeline, success metrics',starters:['How do we design the 90-day pilot?','What are the right success metrics?','What does the 12-month roadmap look like?','What could cause the pilot to fail?'],auto:null},
+  {id:'pilot',label:'Pilot & Launch',icon:'🚀',color:'#0F6E56',desc:'Pilot design, timeline, success metrics based on what was built',starters:['How do we design the 90-day MassDevelopment pilot?','What are the right success metrics for the AI intake agent?','What does the 12-month roadmap look like after the pilot?','What could cause the pilot to fail?'],auto:null},
   {id:'risk',label:'Risk & Compliance',icon:'⚠️',color:'#D85A30',desc:'Risks, security, legal, data privacy, AI compliance',starters:['What are the biggest risks?','What compliance applies to government AI?','How do we handle data privacy?','What if the AI gives wrong eligibility advice?'],auto:null}
 ];
 
