@@ -167,6 +167,8 @@ function buildFallback(msgs) {
   const min=ctx.includes('hispanic')||ctx.includes('minority')||ctx.includes('latina')||ctx.includes('black');
   const wom=ctx.includes('woman')||ctx.includes('female');
   const emp=ctx.match(/(\d+)\s*employee/)?.[1];
+  const staffScore = min||wom ? 78 : 65;
+  const staffTier = staffScore >= 85 ? 'white-glove' : staffScore >= 70 ? 'priority' : 'standard';
   return {
     businessProfile:{type:'Small business',location:'Massachusetts',years:3,employees:emp?parseInt(emp):5,revenue:'Not specified',tags:['Massachusetts',...(min?['Minority-owned']:[]),...(wom?['Woman-owned']:[])]},
     selfNominated:[],
@@ -175,7 +177,8 @@ function buildFallback(msgs) {
       ...(min||wom?[{program:'MWBE Certification',status:'strong',reason:'As a minority or woman-owned business you likely qualify for state contracting preferences.',criteria:[{met:'yes',label:'Minority or woman ownership',detail:'Confirmed',tip:''},{met:'partial',label:'Owner day-to-day control',detail:'Must document management role',tip:'Prepare an org chart'}]}]:[]),
       {program:'Small Business Development Center (SBDC)',status:'strong',reason:'Free counseling available to all Massachusetts small businesses.',criteria:[{met:'yes',label:'Massachusetts small business',detail:'Confirmed',tip:''}]}
     ],
-    staffScore:min||wom?78:65, staffTier:min||wom?'priority':'standard',
+    staffScore,
+    staffTier,
     impactProfile:{jobs:emp&&parseInt(emp)>10?'High':'Medium',region:'Medium',diversity:min||wom?'High':'Low',sector:'Medium',sustainability:'Low'}
   };
 }
@@ -361,8 +364,16 @@ function saveLoanAmount() {
 }
 
 function renderStaff(){
+  // Normalize tier based on actual score
+  function normalizeTier(score) {
+    if (score >= 85) return 'white-glove';
+    if (score >= 70) return 'priority';
+    return 'standard';
+  }
+  const rawScore = scorecard ? scorecard.staffScore : 75;
+  const normalizedTier = normalizeTier(rawScore);
   const businesses=[
-    {name:scorecard?(scorecard.businessProfile?.type||'Your business'):'Your business',biz:scorecard?(scorecard.businessProfile?.location||'Massachusetts'):'Massachusetts',score:scorecard?scorecard.staffScore:75,tier:scorecard?scorecard.staffTier:'priority',programs:scorecard?(scorecard.recommended||[]):[],impact:scorecard?scorecard.impactProfile:{}},
+    {name:scorecard?(scorecard.businessProfile?.type||'Your business'):'Your business',biz:scorecard?(scorecard.businessProfile?.location||'Massachusetts'):'Massachusetts',score:rawScore,tier:normalizedTier,programs:scorecard?(scorecard.recommended||[]):[],impact:scorecard?scorecard.impactProfile:{}},
     {name:'James Chen',biz:'Tech startup · Boston',score:82,tier:'priority',programs:[{program:'MassTech AI Program',status:'strong'},{program:'MLSC Tax Incentive',status:'good'}],impact:{jobs:'High',region:'Medium',diversity:'Medium',sector:'High',sustainability:'Medium'}},
     {name:'GreenBuild Co.',biz:'Construction · Springfield',score:76,tier:'standard',programs:[{program:'MassCEC Clean Energy',status:'strong'}],impact:{jobs:'Medium',region:'High',diversity:'Low',sector:'High',sustainability:'High'}},
     {name:'Sarah Patel',biz:'Retail · Cambridge',score:61,tier:'standard',programs:[{program:'SBDC Counseling',status:'good'}],impact:{jobs:'Low',region:'Low',diversity:'High',sector:'Low',sustainability:'Low'}}
